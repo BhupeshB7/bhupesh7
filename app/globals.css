@@ -183,7 +183,7 @@ body {
 /* Primary button */
 .btn-primary {
   @apply inline-flex items-center justify-center gap-2 rounded-lg no-underline;
-  font-family: var(--font-brand-mono), "JetBrains Mono", monospace;
+  font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -202,7 +202,6 @@ body {
   white-space: nowrap;
   position: relative;
   overflow: hidden;
-  isolation: isolate;
   box-shadow:
     0 0 0 1px rgba(99, 102, 241, 0.3),
     0 4px 20px rgba(99, 102, 241, 0.22);
@@ -231,31 +230,12 @@ body {
   pointer-events: none;
 }
 
-.btn-primary::after {
-  content: "";
-  position: absolute;
-  inset: -30% -10%;
-  background: radial-gradient(
-    circle at 50% 50%,
-    rgba(129, 140, 248, 0.35),
-    transparent 62%
-  );
-  opacity: 0;
-  transition: opacity 0.28s ease;
-  pointer-events: none;
-  z-index: -1;
-}
-
 .btn-primary:hover {
   transform: translateY(-3px) scale(1.02);
   background-position: 100% 0;
   box-shadow:
     0 0 0 1px rgba(129, 140, 248, 0.55),
     0 18px 44px rgba(99, 102, 241, 0.42);
-}
-
-.btn-primary:hover::after {
-  opacity: 1;
 }
 
 .btn-primary:active {

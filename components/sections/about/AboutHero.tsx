@@ -8,47 +8,7 @@ import {
 } from "@/components/animations/variants";
 import { ABOUT_BIO } from "@/lib/constants";
 import { motion } from "framer-motion";
-
-// ─── Download icon ────────────────────────────────────────────────────────────
-function DownloadIcon() {
-  return (
-    <svg
-      width="13"
-      height="13"
-      viewBox="0 0 13 13"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M6.5 1v8M3 6.5l3.5 3.5 3.5-3.5M1.5 11.5h10"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-// ─── Arrow icon ───────────────────────────────────────────────────────────────
-function ArrowIcon() {
-  return (
-    <svg
-      width="13"
-      height="13"
-      viewBox="0 0 13 13"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M2.5 10.5L10.5 2.5M10.5 2.5H4.5M10.5 2.5V8.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
+import { ArrowUpRight, Download, MapPin, Star } from "lucide-react";
 
 // ─── Photo frame with orbital ring ───────────────────────────────────────────
 function PhotoFrame() {
@@ -178,9 +138,10 @@ function PhotoFrame() {
         style={{ position: "absolute", top: "12%", right: "-32px" }}
       />
       <FloatChip
-        label="1.1k+ ★"
+        label="1.1k+"
         color="#fbbf24"
         style={{ position: "absolute", bottom: "32%", right: "-36px" }}
+        icon={<Star size={10} strokeWidth={1.9} />}
       />
     </div>
   );
@@ -190,10 +151,12 @@ function FloatChip({
   label,
   color,
   style,
+  icon,
 }: {
   label: string;
   color: string;
   style: React.CSSProperties;
+  icon?: React.ReactNode;
 }) {
   return (
     <div
@@ -206,9 +169,9 @@ function FloatChip({
         padding: "5px 10px",
         borderRadius: "6px",
         background: "rgba(7,8,15,0.88)",
-        border: `1px solid ${color}28`,
+        border: `1px solid color-mix(in srgb, ${color} 18%, transparent)`,
         backdropFilter: "blur(10px)",
-        boxShadow: `0 4px 20px rgba(0,0,0,0.4), 0 0 0 1px ${color}10`,
+        boxShadow: `0 4px 20px rgba(0,0,0,0.4), 0 0 0 1px color-mix(in srgb, ${color} 10%, transparent)`,
         whiteSpace: "nowrap",
         zIndex: 2,
       }}
@@ -222,6 +185,7 @@ function FloatChip({
           flexShrink: 0,
         }}
       />
+      {icon && <span style={{ color, display: "inline-flex" }}>{icon}</span>}
       <span
         className="font-mono"
         style={{
@@ -333,7 +297,7 @@ export default function AboutHero() {
             className="font-mono text-[10px] tracking-[.06em] inline-flex items-center gap-[6px]"
             style={{ color: "rgba(255,255,255,.3)" }}
           >
-            <span aria-hidden="true">📍</span>
+            <MapPin size={12} strokeWidth={1.8} />
             {ABOUT_BIO.location}
           </span>
           <span aria-hidden="true" style={{ color: "rgba(255,255,255,.12)" }}>
@@ -370,11 +334,11 @@ export default function AboutHero() {
             aria-label="Download resume PDF"
           >
             Download Resume
-            <DownloadIcon />
+            <Download size={13} strokeWidth={1.8} />
           </a>
           <a href="#contact" className="btn-ghost">
             Let's Talk
-            <ArrowIcon />
+            <ArrowUpRight size={13} strokeWidth={1.8} />
           </a>
         </motion.div>
       </motion.div>

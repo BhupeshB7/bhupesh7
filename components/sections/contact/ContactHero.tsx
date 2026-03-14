@@ -1,8 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
+import {
+  fadeUp,
+  staggerContainer,
+  VIEWPORT,
+} from "@/components/animations/variants";
 import { CONTACT_INFO } from "@/lib/constants";
-import { fadeUp, staggerContainer, listItem, VIEWPORT } from "@/components/animations/variants";
+import { motion } from "framer-motion";
+import { Globe2, Zap } from "lucide-react";
 
 export default function ContactHero() {
   return (
@@ -20,7 +25,9 @@ export default function ContactHero() {
       >
         <div
           className="h-px w-8 shrink-0"
-          style={{ background: "linear-gradient(to right, transparent, var(--accent))" }}
+          style={{
+            background: "linear-gradient(to right, transparent, var(--accent))",
+          }}
         />
         <span
           className="font-mono text-[9px] tracking-[.14em] uppercase"
@@ -30,7 +37,9 @@ export default function ContactHero() {
         </span>
         <div
           className="h-px w-8 shrink-0"
-          style={{ background: "linear-gradient(to left, transparent, var(--accent))" }}
+          style={{
+            background: "linear-gradient(to left, transparent, var(--accent))",
+          }}
         />
       </motion.div>
 
@@ -47,8 +56,7 @@ export default function ContactHero() {
       >
         LET'S BUILD
         <br />
-        <span style={{ color: "var(--accent-light)" }}>SOMETHING</span>{" "}
-        GREAT
+        <span style={{ color: "var(--accent-light)" }}>SOMETHING</span> GREAT
       </motion.h1>
 
       {/* Sub */}
@@ -65,7 +73,8 @@ export default function ContactHero() {
         }}
       >
         Whether it's a product idea, a technical problem, or just a conversation
-        about architecture — I read every message and reply to every serious inquiry.
+        about architecture — I read every message and reply to every serious
+        inquiry.
       </motion.p>
 
       {/* Availability + response strip */}
@@ -113,11 +122,23 @@ export default function ContactHero() {
           </span>
         </div>
 
-        <div aria-hidden="true" style={{ width: "1px", height: "18px", background: "rgba(255,255,255,0.08)" }} />
+        <div
+          aria-hidden="true"
+          style={{
+            width: "1px",
+            height: "18px",
+            background: "rgba(255,255,255,0.08)",
+          }}
+        />
 
         {/* Response time */}
         <div className="flex items-center gap-[7px]">
-          <span aria-hidden="true" style={{ fontSize: "11px", color: "rgba(255,255,255,.3)" }}>⚡</span>
+          <Zap
+            size={12}
+            strokeWidth={1.8}
+            aria-hidden="true"
+            style={{ color: "rgba(255,255,255,.3)" }}
+          />
           <span
             className="font-mono text-[10px] tracking-[.06em]"
             style={{ color: "rgba(255,255,255,.4)" }}
@@ -126,11 +147,23 @@ export default function ContactHero() {
           </span>
         </div>
 
-        <div aria-hidden="true" style={{ width: "1px", height: "18px", background: "rgba(255,255,255,0.08)" }} />
+        <div
+          aria-hidden="true"
+          style={{
+            width: "1px",
+            height: "18px",
+            background: "rgba(255,255,255,0.08)",
+          }}
+        />
 
         {/* Timezone */}
         <div className="flex items-center gap-[7px]">
-          <span aria-hidden="true" style={{ fontSize: "11px", color: "rgba(255,255,255,.3)" }}>🌏</span>
+          <Globe2
+            size={12}
+            strokeWidth={1.8}
+            aria-hidden="true"
+            style={{ color: "rgba(255,255,255,.3)" }}
+          />
           <span
             className="font-mono text-[10px] tracking-[.06em]"
             style={{ color: "rgba(255,255,255,.4)" }}

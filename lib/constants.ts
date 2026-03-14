@@ -7,6 +7,9 @@ export const COLORS = {
   green: "#00ff88",
 } as const;
 
+export const CONTACT_EMAIL =
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL || "contact@bhupeshb7.me";
+
 // ─── Navigation ──────────────────────────────────────────────────────────────
 export const NAV_LINKS = [
   "about",
@@ -46,7 +49,7 @@ export const SOCIALS = [
   { label: "GitHub", url: "https://github.com/bhupeshb7", icon: "GH" },
   { label: "LinkedIn", url: "#", icon: "LI" },
   { label: "Twitter", url: "#", icon: "TW" },
-  { label: "Email", url: "mailto:bhupesh@dev.com", icon: "EM" },
+  { label: "Email", url: `mailto:${CONTACT_EMAIL}`, icon: "EM" },
   { label: "Blog", url: "#", icon: "BL" },
 ] as const;
 
@@ -454,7 +457,7 @@ export type BlogPost = (typeof BLOG_POSTS)[number];
 
 // ─── Contact ──────────────────────────────────────────────────────────────────
 export const CONTACT_INFO = {
-  email: "bhupesh@dev.com",
+  email: CONTACT_EMAIL,
   calendlyUrl: "https://calendly.com/bhupeshb7/30min", // replace with real link
   twitterUrl: "https://twitter.com/bhupeshb7",
   timezone: "IST (UTC+5:30)",
@@ -570,8 +573,8 @@ export const CONTACT_SOCIALS = [
   { label: "LinkedIn", url: "#", handle: "bhupesh-kumar", color: "#818cf8" },
   {
     label: "Email",
-    url: "mailto:bhupesh@dev.com",
-    handle: "bhupesh@dev.com",
+    url: `mailto:${CONTACT_EMAIL}`,
+    handle: CONTACT_EMAIL,
     color: "#34d399",
   },
 ] as const;

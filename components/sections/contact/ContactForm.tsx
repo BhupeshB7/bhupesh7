@@ -1,17 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { CONTACT_INFO } from "@/lib/constants";
 import { fadeUp, scaleIn, VIEWPORT } from "@/components/animations/variants";
+import { CONTACT_INFO } from "@/lib/constants";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowRight, Check } from "lucide-react";
+import { useState } from "react";
 
 type FormData = {
-  name:        string;
-  email:       string;
+  name: string;
+  email: string;
   projectType: string;
-  budget:      string;
-  timeline:    string;
-  message:     string;
+  budget: string;
+  timeline: string;
+  message: string;
 };
 
 const PROJECT_TYPES = [
@@ -57,7 +58,10 @@ function Field({
       >
         {label}
         {required && (
-          <span style={{ color: "var(--accent-light)", marginLeft: "4px" }} aria-label="required">
+          <span
+            style={{ color: "var(--accent-light)", marginLeft: "4px" }}
+            aria-label="required"
+          >
             *
           </span>
         )}
@@ -115,30 +119,36 @@ function SuccessScreen() {
         }}
         aria-hidden="true"
       >
-        <svg width="26" height="26" viewBox="0 0 26 26" fill="none">
-          <path
-            d="M5 13l5.5 5.5 11-11"
-            stroke="#34d399"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <Check size={26} color="#34d399" strokeWidth={2.2} />
       </div>
 
       <div>
         <h3
           className="font-display mb-[10px]"
-          style={{ fontSize: "clamp(1.3rem,2.5vw,1.8rem)", letterSpacing: "-.01em", color: "rgba(255,255,255,.9)" }}
+          style={{
+            fontSize: "clamp(1.3rem,2.5vw,1.8rem)",
+            letterSpacing: "-.01em",
+            color: "rgba(255,255,255,.9)",
+          }}
         >
           MESSAGE SENT
         </h3>
         <p
           className="font-mono"
-          style={{ fontSize: "12px", lineHeight: 1.85, color: "rgba(255,255,255,.35)", letterSpacing: ".02em", maxWidth: "340px" }}
+          style={{
+            fontSize: "12px",
+            lineHeight: 1.85,
+            color: "rgba(255,255,255,.35)",
+            letterSpacing: ".02em",
+            maxWidth: "340px",
+          }}
         >
-          Thanks for reaching out. I'll review your brief and get back to you within{" "}
-          <span style={{ color: "var(--accent-light)" }}>{CONTACT_INFO.responseTime}</span>.
+          Thanks for reaching out. I'll review your brief and get back to you
+          within{" "}
+          <span style={{ color: "var(--accent-light)" }}>
+            {CONTACT_INFO.responseTime}
+          </span>
+          .
         </p>
       </div>
 
@@ -147,11 +157,17 @@ function SuccessScreen() {
         style={{ color: "rgba(255,255,255,.2)" }}
       >
         While you wait — check out{" "}
-        <a href="#projects" style={{ color: "var(--accent-light)", textDecoration: "none" }}>
+        <a
+          href="#projects"
+          style={{ color: "var(--accent-light)", textDecoration: "none" }}
+        >
           my projects
         </a>{" "}
         or{" "}
-        <a href="#blog" style={{ color: "var(--accent-light)", textDecoration: "none" }}>
+        <a
+          href="#blog"
+          style={{ color: "var(--accent-light)", textDecoration: "none" }}
+        >
           latest posts
         </a>
         .
@@ -163,15 +179,25 @@ function SuccessScreen() {
 // ─── ContactForm ──────────────────────────────────────────────────────────────
 export default function ContactForm() {
   const [form, setForm] = useState<FormData>({
-    name: "", email: "", projectType: "", budget: "", timeline: "", message: "",
+    name: "",
+    email: "",
+    projectType: "",
+    budget: "",
+    timeline: "",
+    message: "",
   });
-  const [submitted, setSubmitted]   = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [focused,    setFocused]    = useState<string | null>(null);
+  const [focused, setFocused] = useState<string | null>(null);
 
-  const set = (k: keyof FormData) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => setForm((p) => ({ ...p, [k]: e.target.value }));
+  const set =
+    (k: keyof FormData) =>
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >,
+    ) =>
+      setForm((p) => ({ ...p, [k]: e.target.value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -184,8 +210,10 @@ export default function ContactForm() {
 
   const focusStyle = (name: string): React.CSSProperties => ({
     ...inputBase,
-    borderColor: focused === name ? "rgba(99,102,241,0.55)" : "rgba(99,102,241,0.18)",
-    background: focused === name ? "rgba(99,102,241,0.04)" : "rgba(255,255,255,0.03)",
+    borderColor:
+      focused === name ? "rgba(99,102,241,0.55)" : "rgba(99,102,241,0.18)",
+    background:
+      focused === name ? "rgba(99,102,241,0.04)" : "rgba(255,255,255,0.03)",
   });
 
   const selectStyle = (name: string): React.CSSProperties => ({
@@ -218,9 +246,12 @@ export default function ContactForm() {
         aria-hidden="true"
         style={{
           position: "absolute",
-          top: 0, left: 0, right: 0,
+          top: 0,
+          left: 0,
+          right: 0,
           height: "2px",
-          background: "linear-gradient(90deg, var(--accent), var(--accent-light), transparent)",
+          background:
+            "linear-gradient(90deg, var(--accent), var(--accent-light), transparent)",
         }}
       />
 
@@ -230,7 +261,8 @@ export default function ContactForm() {
         style={{
           position: "absolute",
           inset: 0,
-          background: "radial-gradient(50% 40% at 80% 0%, rgba(99,102,241,0.05) 0%, transparent 65%)",
+          background:
+            "radial-gradient(50% 40% at 80% 0%, rgba(99,102,241,0.05) 0%, transparent 65%)",
           pointerEvents: "none",
         }}
       />
@@ -259,7 +291,10 @@ export default function ContactForm() {
               <div className="flex items-center gap-[10px] mb-[8px]">
                 <div
                   className="h-px w-8 shrink-0"
-                  style={{ background: "linear-gradient(to right, var(--accent), transparent)" }}
+                  style={{
+                    background:
+                      "linear-gradient(to right, var(--accent), transparent)",
+                  }}
                 />
                 <span
                   className="font-mono text-[9px] tracking-[.14em] uppercase"
@@ -270,7 +305,11 @@ export default function ContactForm() {
               </div>
               <h2
                 className="font-display"
-                style={{ fontSize: "clamp(1.4rem,3vw,2rem)", letterSpacing: "-.01em", lineHeight: 1 }}
+                style={{
+                  fontSize: "clamp(1.4rem,3vw,2rem)",
+                  letterSpacing: "-.01em",
+                  lineHeight: 1,
+                }}
               >
                 TELL ME ABOUT YOUR PROJECT
               </h2>
@@ -331,9 +370,13 @@ export default function ContactForm() {
                   style={selectStyle("projectType")}
                   aria-label="Project type"
                 >
-                  <option value="" disabled>Select type…</option>
+                  <option value="" disabled>
+                    Select type…
+                  </option>
                   {PROJECT_TYPES.map((t) => (
-                    <option key={t} value={t} style={{ background: "#07080f" }}>{t}</option>
+                    <option key={t} value={t} style={{ background: "#07080f" }}>
+                      {t}
+                    </option>
                   ))}
                 </select>
               </Field>
@@ -347,9 +390,13 @@ export default function ContactForm() {
                   style={selectStyle("budget")}
                   aria-label="Budget range"
                 >
-                  <option value="" disabled>Select budget…</option>
+                  <option value="" disabled>
+                    Select budget…
+                  </option>
                   {BUDGETS.map((b) => (
-                    <option key={b} value={b} style={{ background: "#07080f" }}>{b}</option>
+                    <option key={b} value={b} style={{ background: "#07080f" }}>
+                      {b}
+                    </option>
                   ))}
                 </select>
               </Field>
@@ -363,9 +410,13 @@ export default function ContactForm() {
                   style={selectStyle("timeline")}
                   aria-label="Project timeline"
                 >
-                  <option value="" disabled>Select timeline…</option>
+                  <option value="" disabled>
+                    Select timeline…
+                  </option>
                   {TIMELINES.map((t) => (
-                    <option key={t} value={t} style={{ background: "#07080f" }}>{t}</option>
+                    <option key={t} value={t} style={{ background: "#07080f" }}>
+                      {t}
+                    </option>
                   ))}
                 </select>
               </Field>
@@ -392,7 +443,15 @@ export default function ContactForm() {
             </Field>
 
             {/* Submit row */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: "16px",
+              }}
+            >
               <p
                 className="font-mono text-[9px] tracking-[.05em]"
                 style={{ color: "rgba(255,255,255,.18)" }}
@@ -408,7 +467,13 @@ export default function ContactForm() {
                 aria-label={submitting ? "Sending message…" : "Send message"}
               >
                 {submitting ? (
-                  <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                    }}
+                  >
                     <span
                       aria-hidden="true"
                       style={{
@@ -426,9 +491,11 @@ export default function ContactForm() {
                 ) : (
                   <>
                     Send Message
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                      <path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <ArrowRight
+                      size={12}
+                      strokeWidth={1.8}
+                      aria-hidden="true"
+                    />
                   </>
                 )}
               </button>

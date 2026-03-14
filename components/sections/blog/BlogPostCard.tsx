@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
 import { listItem } from "@/components/animations/variants";
 import type { BlogPost } from "@/lib/constants";
+import { motion } from "framer-motion";
+import { Eye } from "lucide-react";
+import { useState } from "react";
 
 export default function BlogPostCard({ post }: { post: BlogPost }) {
   const [hov, setHov] = useState(false);
@@ -21,7 +22,9 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
           textDecoration: "none",
           borderRadius: "14px",
           overflow: "hidden",
-          background: hov ? "rgba(255,255,255,0.024)" : "rgba(255,255,255,0.016)",
+          background: hov
+            ? "rgba(255,255,255,0.024)"
+            : "rgba(255,255,255,0.016)",
           border: `1px solid ${hov ? `${post.coverAccent}28` : "rgba(99,102,241,0.12)"}`,
           transition: "border-color .25s, background .25s",
           position: "relative",
@@ -33,7 +36,9 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
           aria-hidden="true"
           style={{
             position: "absolute",
-            top: 0, left: 0, right: 0,
+            top: 0,
+            left: 0,
+            right: 0,
             height: "2px",
             background: `linear-gradient(90deg, ${post.coverAccent}, ${post.coverAccent}44, transparent)`,
             opacity: hov ? 1 : 0,
@@ -60,8 +65,10 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
           {/* Grid texture */}
           <div
             style={{
-              position: "absolute", inset: 0,
-              background: "repeating-linear-gradient(90deg, rgba(129,140,248,0.03) 0px, rgba(129,140,248,0.03) 1px, transparent 1px, transparent 28px)",
+              position: "absolute",
+              inset: 0,
+              background:
+                "repeating-linear-gradient(90deg, rgba(129,140,248,0.03) 0px, rgba(129,140,248,0.03) 1px, transparent 1px, transparent 28px)",
             }}
           />
           {/* Category watermark */}
@@ -84,9 +91,12 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
           <div
             style={{
               position: "absolute",
-              bottom: 0, left: 0, right: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
               height: "40px",
-              background: "linear-gradient(to bottom, transparent, rgba(7,8,15,0.7))",
+              background:
+                "linear-gradient(to bottom, transparent, rgba(7,8,15,0.7))",
             }}
           />
         </div>
@@ -102,7 +112,14 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
           }}
         >
           {/* Category + read time */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "8px",
+            }}
+          >
             <span
               className="font-mono text-[9px] tracking-[.1em] uppercase"
               style={{
@@ -115,7 +132,10 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
             >
               {post.category}
             </span>
-            <span className="font-mono text-[9px] tracking-[.05em]" style={{ color: "rgba(255,255,255,.2)" }}>
+            <span
+              className="font-mono text-[9px] tracking-[.05em]"
+              style={{ color: "rgba(255,255,255,.2)" }}
+            >
               {post.readTime} read
             </span>
           </div>
@@ -149,7 +169,15 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
           </p>
 
           {/* Tags */}
-          <ul style={{ display: "flex", gap: "5px", flexWrap: "wrap", listStyle: "none" }} aria-label="Tags">
+          <ul
+            style={{
+              display: "flex",
+              gap: "5px",
+              flexWrap: "wrap",
+              listStyle: "none",
+            }}
+            aria-label="Tags"
+          >
             {post.tags.map((tag) => (
               <li key={tag}>
                 <span
@@ -191,10 +219,7 @@ export default function BlogPostCard({ post }: { post: BlogPost }) {
                 style={{ color: "rgba(255,255,255,.2)" }}
                 aria-label={`${post.views} views`}
               >
-                <svg width="9" height="9" viewBox="0 0 9 9" fill="none" aria-hidden="true">
-                  <path d="M4.5 1.5C2 1.5 0.5 4.5 0.5 4.5C0.5 4.5 2 7.5 4.5 7.5C7 7.5 8.5 4.5 8.5 4.5C8.5 4.5 7 1.5 4.5 1.5Z" stroke="currentColor" strokeWidth="0.9" />
-                  <circle cx="4.5" cy="4.5" r="1.2" stroke="currentColor" strokeWidth="0.9" />
-                </svg>
+                <Eye size={10} strokeWidth={1.8} aria-hidden="true" />
                 {post.views}
               </span>
             </div>

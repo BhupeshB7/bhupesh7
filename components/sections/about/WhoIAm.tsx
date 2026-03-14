@@ -7,25 +7,26 @@ import {
   VIEWPORT,
 } from "@/components/animations/variants";
 import { motion } from "framer-motion";
+import { BookOpen, Globe, Search, Zap } from "lucide-react";
 
 const TRAITS = [
   {
-    icon: "⚡",
+    icon: Zap,
     label: "Fast learner",
     desc: "Picked up Rust in 3 months to build a CLI tool. Now I can't stop.",
   },
   {
-    icon: "🔍",
+    icon: Search,
     label: "Detail-obsessed",
     desc: "I notice when a button's hover delay is 20ms too slow. Yes, that matters.",
   },
   {
-    icon: "📖",
+    icon: BookOpen,
     label: "Writer",
     desc: "Technical writing is how I verify I actually understand something.",
   },
   {
-    icon: "🌐",
+    icon: Globe,
     label: "Open source",
     desc: "Everything I build privately eventually ends up public. Knowledge compounds.",
   },
@@ -162,18 +163,17 @@ export default function WhoIAm() {
                 border: "1px solid rgba(99,102,241,0.1)",
               }}
             >
-              <span
+              <t.icon
                 aria-hidden="true"
+                size={18}
+                strokeWidth={1.9}
                 style={{
-                  fontSize: "18px",
                   lineHeight: 1,
                   flexShrink: 0,
                   marginTop: "2px",
-                  filter: "saturate(0.9)",
+                  color: "rgba(129,140,248,.85)",
                 }}
-              >
-                {t.icon}
-              </span>
+              />
               <div>
                 <p
                   className="font-mono text-[11px] tracking-[.06em] uppercase mb-[5px]"

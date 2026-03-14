@@ -3,6 +3,7 @@
 import { fadeIn, fadeUp, VIEWPORT } from "@/components/animations/variants";
 import { BLOG_POSTS } from "@/lib/constants";
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import BlogGrid from "./BlogGrid";
 import BlogNewsletter from "./BlogNewsletter";
 import FeaturedPost from "./FeaturedPost";
@@ -195,7 +196,9 @@ export default function BlogSection() {
               }}
               aria-label="View all blog posts"
             >
-              All posts ↗
+              <span className="inline-flex items-center gap-[5px]">
+                All posts <ArrowUpRight size={10} strokeWidth={1.8} />
+              </span>
             </a>
           </motion.div>
         </div>

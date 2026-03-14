@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
 import { fadeUp, VIEWPORT } from "@/components/animations/variants";
 import type { BlogPost } from "@/lib/constants";
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import { useState } from "react";
 
 // ─── Generated cover — no image dependency ────────────────────────────────────
 function CoverArt({ accent, title }: { accent: string; title: string }) {
@@ -102,8 +103,11 @@ export default function FeaturedPost({ post }: { post: BlogPost }) {
           <span
             aria-hidden="true"
             style={{
-              width: "4px", height: "4px", borderRadius: "50%",
-              background: post.coverAccent, display: "inline-block",
+              width: "4px",
+              height: "4px",
+              borderRadius: "50%",
+              background: post.coverAccent,
+              display: "inline-block",
               animation: "pulse-glow 2s ease infinite",
             }}
           />
@@ -122,7 +126,9 @@ export default function FeaturedPost({ post }: { post: BlogPost }) {
           borderRadius: "18px",
           overflow: "hidden",
           border: `1px solid ${hov ? `${post.coverAccent}30` : "rgba(99,102,241,0.14)"}`,
-          background: hov ? "rgba(255,255,255,0.022)" : "rgba(255,255,255,0.014)",
+          background: hov
+            ? "rgba(255,255,255,0.022)"
+            : "rgba(255,255,255,0.014)",
           textDecoration: "none",
           transition: "border-color .3s, background .3s",
           position: "relative",
@@ -134,7 +140,9 @@ export default function FeaturedPost({ post }: { post: BlogPost }) {
           aria-hidden="true"
           style={{
             position: "absolute",
-            top: 0, left: 0, right: 0,
+            top: 0,
+            left: 0,
+            right: 0,
             height: "2px",
             background: hov
               ? `linear-gradient(90deg, ${post.coverAccent}, ${post.coverAccent}44, transparent)`
@@ -174,10 +182,16 @@ export default function FeaturedPost({ post }: { post: BlogPost }) {
               >
                 {post.category}
               </span>
-              <span className="font-mono text-[9px] tracking-[.05em]" style={{ color: "rgba(255,255,255,.2)" }}>
+              <span
+                className="font-mono text-[9px] tracking-[.05em]"
+                style={{ color: "rgba(255,255,255,.2)" }}
+              >
                 {post.readTime} read
               </span>
-              <span className="font-mono text-[9px] tracking-[.05em]" style={{ color: "rgba(255,255,255,.2)" }}>
+              <span
+                className="font-mono text-[9px] tracking-[.05em]"
+                style={{ color: "rgba(255,255,255,.2)" }}
+              >
                 {post.views} views
               </span>
             </div>
@@ -210,7 +224,15 @@ export default function FeaturedPost({ post }: { post: BlogPost }) {
             </p>
 
             {/* Tags */}
-            <ul style={{ display: "flex", gap: "6px", flexWrap: "wrap", listStyle: "none" }} aria-label="Tags">
+            <ul
+              style={{
+                display: "flex",
+                gap: "6px",
+                flexWrap: "wrap",
+                listStyle: "none",
+              }}
+              aria-label="Tags"
+            >
               {post.tags.map((tag) => (
                 <li key={tag}>
                   <span className="tag-pill">{tag}</span>
@@ -220,7 +242,13 @@ export default function FeaturedPost({ post }: { post: BlogPost }) {
           </div>
 
           {/* Bottom: date + read CTA */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <time
               className="font-mono text-[10px] tracking-[.06em]"
               style={{ color: "rgba(255,255,255,.22)" }}
@@ -237,9 +265,7 @@ export default function FeaturedPost({ post }: { post: BlogPost }) {
               aria-hidden="true"
             >
               Read post
-              <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
-                <path d="M1.5 9.5L9.5 1.5M9.5 1.5H3.5M9.5 1.5V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
+              <ArrowUpRight size={11} strokeWidth={1.8} />
             </span>
           </div>
         </div>

@@ -9,6 +9,7 @@ import {
 } from "@/components/animations/variants";
 import { ACTIVITY_STATS, BUILDING } from "@/lib/constants";
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import ActivityFeed from "./ActivityFeed";
 import ContribGrid from "./ContribGrid";
@@ -277,7 +278,9 @@ export default function ActivitySection() {
               style={{ color: "var(--accent-light)", opacity: 0.65 }}
               aria-label="View GitHub profile"
             >
-              github ↗
+              <span className="inline-flex items-center gap-[4px]">
+                github <ArrowUpRight size={10} strokeWidth={1.8} />
+              </span>
             </a>
           </div>
           <ActivityFeed />

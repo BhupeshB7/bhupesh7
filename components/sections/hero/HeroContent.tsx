@@ -8,6 +8,16 @@ import {
 } from "@/components/animations/variants";
 import { COLORS, HERO_STATS, ROLES, SOCIALS, TECH_TAGS } from "@/lib/constants";
 import { motion } from "framer-motion";
+import {
+  ArrowUpRight,
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  MoveRight,
+  Rss,
+  Twitter,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 
 // ─── Typed role animation ─────────────────────────────────────────────────────
@@ -83,15 +93,15 @@ function StatItem({ value, label }: { value: string; label: string }) {
 }
 
 // ─── Social link ──────────────────────────────────────────────────────────────
-function SocialLink({
-  label,
-  url,
-  icon,
-}: {
-  label: string;
-  url: string;
-  icon: string;
-}) {
+function SocialLink({ label, url }: { label: string; url: string }) {
+  const iconByLabel: Record<string, React.ReactNode> = {
+    GitHub: <Github size={13} strokeWidth={1.8} />,
+    LinkedIn: <Linkedin size={13} strokeWidth={1.8} />,
+    Twitter: <Twitter size={13} strokeWidth={1.8} />,
+    Email: <Mail size={13} strokeWidth={1.8} />,
+    Blog: <Rss size={13} strokeWidth={1.8} />,
+  };
+
   return (
     <a
       href={url}
@@ -101,7 +111,7 @@ function SocialLink({
       aria-label={label}
     >
       <span className="social-icon" aria-hidden="true">
-        {icon}
+        {iconByLabel[label] ?? <MoveRight size={13} strokeWidth={1.8} />}
       </span>
       <span>{label}</span>
     </a>
@@ -160,7 +170,10 @@ export default function HeroContent() {
           className="font-mono text-[10px] tracking-[.06em]"
           style={{ color: "rgba(255,255,255,.35)" }}
         >
-          India 🇮🇳
+          <span className="inline-flex items-center gap-[6px]">
+            <MapPin size={12} strokeWidth={1.7} />
+            India
+          </span>
         </span>
       </motion.div>
 
@@ -221,11 +234,11 @@ export default function HeroContent() {
       >
         <a href="#contact" className="btn-primary">
           Work With Me
-          <ArrowIcon />
+          <ArrowUpRight size={13} strokeWidth={1.8} />
         </a>
         <a href="#projects" className="btn-ghost">
           View Projects
-          <ChevronIcon />
+          <MoveRight size={13} strokeWidth={1.8} />
         </a>
       </motion.div>
 
@@ -252,50 +265,10 @@ export default function HeroContent() {
       >
         {SOCIALS.map((s) => (
           <div key={s.label} role="listitem">
-            <SocialLink label={s.label} url={s.url} icon={s.icon} />
+            <SocialLink label={s.label} url={s.url} />
           </div>
         ))}
       </motion.div>
     </motion.div>
-  );
-}
-
-// ─── Inline SVG icons ─────────────────────────────────────────────────────────
-function ArrowIcon() {
-  return (
-    <svg
-      width="13"
-      height="13"
-      viewBox="0 0 13 13"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M2.5 10.5L10.5 2.5M10.5 2.5H4.5M10.5 2.5V8.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function ChevronIcon() {
-  return (
-    <svg
-      width="13"
-      height="13"
-      viewBox="0 0 13 13"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M1.5 6.5h10M7.5 2.5l4 4-4 4"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }

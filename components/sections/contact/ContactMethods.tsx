@@ -1,51 +1,59 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import {
+  fadeUp,
+  listItem,
+  staggerContainer,
+  VIEWPORT,
+} from "@/components/animations/variants";
 import { CONTACT_INFO } from "@/lib/constants";
-import { staggerContainer, listItem, fadeUp, VIEWPORT } from "@/components/animations/variants";
+import { motion } from "framer-motion";
+import type { LucideIcon } from "lucide-react";
+import { ArrowUpRight, CalendarClock, Mail, MessageCircle } from "lucide-react";
+import { useState } from "react";
 
 const METHODS = [
   {
-    id:       "calendly",
-    icon:     "📅",
-    color:    "var(--accent-light)",
-    title:    "Book a 30-min call",
-    sub:      "Calendly · Free",
-    desc:     "Jump on a quick discovery call. No agenda required — just come with your problem. I'm available Mon–Fri, IST timezone.",
-    cta:      "Open Calendly",
-    href:     CONTACT_INFO.calendlyUrl,
+    id: "calendly",
+    icon: CalendarClock,
+    color: "var(--accent-light)",
+    title: "Book a 30-min call",
+    sub: "Calendly · Free",
+    desc: "Jump on a quick discovery call. No agenda required — just come with your problem. I'm available Mon–Fri, IST timezone.",
+    cta: "Open Calendly",
+    href: CONTACT_INFO.calendlyUrl,
     external: true,
-    badge:    "Fastest",
+    badge: "Fastest",
   },
   {
-    id:       "email",
-    icon:     "✉️",
-    color:    "#34d399",
-    title:    "Send a detailed brief",
-    sub:      "Email · < 24h reply",
-    desc:     "For project inquiries, proposals, or anything that needs more context than a call. Include your timeline, budget, and what you're building.",
-    cta:      "Send email",
-    href:     `mailto:${CONTACT_INFO.email}?subject=Project%20Inquiry`,
+    id: "email",
+    icon: Mail,
+    color: "#34d399",
+    title: "Send a detailed brief",
+    sub: "Email · < 24h reply",
+    desc: "For project inquiries, proposals, or anything that needs more context than a call. Include your timeline, budget, and what you're building.",
+    cta: "Send email",
+    href: `mailto:${CONTACT_INFO.email}?subject=Project%20Inquiry`,
     external: false,
-    badge:    "Async",
+    badge: "Async",
   },
   {
-    id:       "twitter",
-    icon:     "💬",
-    color:    "var(--cyan)",
-    title:    "Twitter / X DM",
-    sub:      "@bhupeshb7 · Open DMs",
-    desc:     "Quick question, feedback on a blog post, or just want to say hi? DMs are open. I check Twitter daily.",
-    cta:      "DM on Twitter",
-    href:     CONTACT_INFO.twitterUrl,
+    id: "twitter",
+    icon: MessageCircle,
+    color: "var(--cyan)",
+    title: "Twitter / X DM",
+    sub: "@bhupeshb7 · Open DMs",
+    desc: "Quick question, feedback on a blog post, or just want to say hi? DMs are open. I check Twitter daily.",
+    cta: "DM on Twitter",
+    href: CONTACT_INFO.twitterUrl,
     external: true,
-    badge:    "Quick",
+    badge: "Quick",
   },
 ] as const;
 
-function MethodCard({ method }: { method: typeof METHODS[number] }) {
+function MethodCard({ method }: { method: (typeof METHODS)[number] }) {
   const [hov, setHov] = useState(false);
+  const Icon = method.icon as LucideIcon;
 
   return (
     <motion.div variants={listItem}>
@@ -62,8 +70,12 @@ function MethodCard({ method }: { method: typeof METHODS[number] }) {
           gap: "16px",
           padding: "clamp(22px,2.8vw,32px)",
           borderRadius: "16px",
-          background: hov ? "rgba(255,255,255,0.028)" : "rgba(255,255,255,0.016)",
-          border: `1px solid ${hov ? `${method.color}32` : "rgba(99,102,241,0.12)"}`,
+          background: hov
+            ? "rgba(255,255,255,0.028)"
+            : "rgba(255,255,255,0.016)",
+          border: hov
+            ? `1px solid color-mix(in srgb, ${method.color} 20%, transparent)`
+            : "1px solid rgba(99,102,241,0.12)",
           textDecoration: "none",
           height: "100%",
           position: "relative",
@@ -76,9 +88,11 @@ function MethodCard({ method }: { method: typeof METHODS[number] }) {
           aria-hidden="true"
           style={{
             position: "absolute",
-            top: 0, left: 0, right: 0,
+            top: 0,
+            left: 0,
+            right: 0,
             height: "2px",
-            background: `linear-gradient(90deg, ${method.color}${hov ? "88" : "44"}, transparent)`,
+            background: `linear-gradient(90deg, color-mix(in srgb, ${method.color} ${hov ? "55%" : "30%"}, transparent), transparent)`,
             transition: "opacity .25s",
           }}
         />
@@ -94,8 +108,8 @@ function MethodCard({ method }: { method: typeof METHODS[number] }) {
             letterSpacing: ".1em",
             textTransform: "uppercase",
             color: method.color,
-            background: `${method.color}12`,
-            border: `1px solid ${method.color}22`,
+            background: `color-mix(in srgb, ${method.color} 8%, transparent)`,
+            border: `1px solid color-mix(in srgb, ${method.color} 14%, transparent)`,
             borderRadius: "3px",
             padding: "2px 7px",
           }}
@@ -110,17 +124,16 @@ function MethodCard({ method }: { method: typeof METHODS[number] }) {
             width: "44px",
             height: "44px",
             borderRadius: "10px",
-            background: `${method.color}10`,
-            border: `1px solid ${method.color}22`,
+            background: `color-mix(in srgb, ${method.color} 8%, transparent)`,
+            border: `1px solid color-mix(in srgb, ${method.color} 14%, transparent)`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: "20px",
             flexShrink: 0,
           }}
           aria-hidden="true"
         >
-          {method.icon}
+          <Icon size={18} color={method.color} strokeWidth={1.8} />
         </div>
 
         {/* Text */}
@@ -174,25 +187,16 @@ function MethodCard({ method }: { method: typeof METHODS[number] }) {
           >
             {method.cta}
           </span>
-          <svg
-            width="10"
-            height="10"
-            viewBox="0 0 10 10"
-            fill="none"
+          <ArrowUpRight
+            size={10}
+            strokeWidth={1.8}
             aria-hidden="true"
             style={{
               color: hov ? method.color : "rgba(255,255,255,.2)",
               transition: "color .2s, transform .2s",
               transform: hov ? "translate(2px,-2px)" : "translate(0,0)",
             }}
-          >
-            <path
-              d="M1.5 8.5L8.5 1.5M8.5 1.5H3.5M8.5 1.5V6.5"
-              stroke="currentColor"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-            />
-          </svg>
+          />
         </div>
       </a>
     </motion.div>
@@ -213,7 +217,10 @@ export default function ContactMethods() {
         <div className="flex items-center gap-[10px] mb-[10px]">
           <div
             className="h-px w-8 shrink-0"
-            style={{ background: "linear-gradient(to right, var(--accent), transparent)" }}
+            style={{
+              background:
+                "linear-gradient(to right, var(--accent), transparent)",
+            }}
           />
           <span
             className="font-mono text-[9px] tracking-[.14em] uppercase"
@@ -224,7 +231,11 @@ export default function ContactMethods() {
         </div>
         <h2
           className="font-display"
-          style={{ fontSize: "clamp(1.4rem,3vw,2rem)", letterSpacing: "-.01em", lineHeight: 1 }}
+          style={{
+            fontSize: "clamp(1.4rem,3vw,2rem)",
+            letterSpacing: "-.01em",
+            lineHeight: 1,
+          }}
         >
           3 WAYS TO CONNECT
         </h2>

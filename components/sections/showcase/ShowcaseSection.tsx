@@ -1,18 +1,32 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { PROJECTS, BLOGS, HIGHLIGHTS } from "@/lib/constants";
-import { fadeUp, fadeIn, staggerContainer, VIEWPORT } from "@/components/animations/variants";
+import {
+  fadeIn,
+  fadeUp,
+  staggerContainer,
+  VIEWPORT,
+} from "@/components/animations/variants";
 import SectionHeader from "@/components/ui/SectionHeader";
-import ProjectCard   from "./ProjectCard";
-import BlogCard      from "./BlogCard";
+import { BLOGS, HIGHLIGHTS, PROJECTS } from "@/lib/constants";
+import { motion } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import BlogCard from "./BlogCard";
 import HighlightCard from "./HighlightCard";
+import ProjectCard from "./ProjectCard";
 
 // ─── Shared section row header (with right-side CTA link) ─────────────────────
 function RowHeader({
-  eyebrow, title, sub, ctaLabel, ctaHref,
+  eyebrow,
+  title,
+  sub,
+  ctaLabel,
+  ctaHref,
 }: {
-  eyebrow: string; title: string; sub: string; ctaLabel: string; ctaHref: string;
+  eyebrow: string;
+  title: string;
+  sub: string;
+  ctaLabel: string;
+  ctaHref: string;
 }) {
   return (
     <div
@@ -47,7 +61,10 @@ function RowHeader({
           whiteSpace: "nowrap",
         }}
       >
-        {ctaLabel}
+        <span className="inline-flex items-center gap-[5px]">
+          {ctaLabel}
+          <ArrowUpRight size={10} strokeWidth={1.8} />
+        </span>
       </motion.a>
     </div>
   );
@@ -56,13 +73,22 @@ function RowHeader({
 // ─── ShowcaseSection ──────────────────────────────────────────────────────────
 export default function ShowcaseSection() {
   return (
-    <div style={{ background: "var(--bg)", color: "#fff", position: "relative", zIndex: 2 }}>
-
+    <div
+      style={{
+        background: "var(--bg)",
+        color: "#fff",
+        position: "relative",
+        zIndex: 2,
+      }}
+    >
       {/* ── Projects ── */}
       <section
         id="projects"
         aria-label="Latest projects"
-        style={{ padding: "clamp(72px,9vw,128px) clamp(1.5rem,5vw,4rem)", position: "relative" }}
+        style={{
+          padding: "clamp(72px,9vw,128px) clamp(1.5rem,5vw,4rem)",
+          position: "relative",
+        }}
       >
         <div className="section-separator" aria-hidden="true" />
 
@@ -70,7 +96,7 @@ export default function ShowcaseSection() {
           eyebrow="Work"
           title="LATEST PROJECTS"
           sub="Things I've shipped recently"
-          ctaLabel="all repos ↗"
+          ctaLabel="all repos"
           ctaHref="https://github.com/bhupeshb7"
         />
 
@@ -79,9 +105,15 @@ export default function ShowcaseSection() {
           initial="hidden"
           whileInView="visible"
           viewport={VIEWPORT}
-          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "clamp(14px,2vw,20px)" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "clamp(14px,2vw,20px)",
+          }}
         >
-          {PROJECTS.map((p) => <ProjectCard key={p.name} project={p} />)}
+          {PROJECTS.map((p) => (
+            <ProjectCard key={p.name} project={p} />
+          ))}
         </motion.div>
       </section>
 
@@ -89,7 +121,10 @@ export default function ShowcaseSection() {
       <section
         id="writing"
         aria-label="Latest blog posts"
-        style={{ padding: "clamp(72px,9vw,128px) clamp(1.5rem,5vw,4rem)", position: "relative" }}
+        style={{
+          padding: "clamp(72px,9vw,128px) clamp(1.5rem,5vw,4rem)",
+          position: "relative",
+        }}
       >
         <div className="section-separator" aria-hidden="true" />
 
@@ -97,7 +132,7 @@ export default function ShowcaseSection() {
           eyebrow="Writing"
           title="LATEST POSTS"
           sub="Thoughts on code, craft, and shipping"
-          ctaLabel="all posts ↗"
+          ctaLabel="all posts"
           ctaHref="#"
         />
 
@@ -106,9 +141,15 @@ export default function ShowcaseSection() {
           initial="hidden"
           whileInView="visible"
           viewport={VIEWPORT}
-          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "clamp(14px,2vw,20px)" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "clamp(14px,2vw,20px)",
+          }}
         >
-          {BLOGS.map((post) => <BlogCard key={post.title} post={post} />)}
+          {BLOGS.map((post) => (
+            <BlogCard key={post.title} post={post} />
+          ))}
         </motion.div>
       </section>
 
@@ -118,16 +159,26 @@ export default function ShowcaseSection() {
         aria-label="Quick facts"
         style={{ padding: "0 clamp(1.5rem,5vw,4rem) clamp(72px,9vw,128px)" }}
       >
-        <SectionHeader eyebrow="At a Glance" title="QUICK FACTS" sub="The numbers behind the work" />
+        <SectionHeader
+          eyebrow="At a Glance"
+          title="QUICK FACTS"
+          sub="The numbers behind the work"
+        />
 
         <motion.div
           variants={staggerContainer(0.08)}
           initial="hidden"
           whileInView="visible"
           viewport={VIEWPORT}
-          style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "clamp(12px,1.8vw,16px)" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "clamp(12px,1.8vw,16px)",
+          }}
         >
-          {HIGHLIGHTS.map((item) => <HighlightCard key={item.label} item={item} />)}
+          {HIGHLIGHTS.map((item) => (
+            <HighlightCard key={item.label} item={item} />
+          ))}
         </motion.div>
 
         {/* CTA banner */}
@@ -157,8 +208,12 @@ export default function ShowcaseSection() {
             >
               Open to work — let's build something.
             </h3>
-            <p className="font-mono text-[11px] leading-[1.7] tracking-[.02em]" style={{ color: "rgba(255,255,255,.28)" }}>
-              Looking for freelance projects or full-time roles in frontend &amp; full-stack engineering.
+            <p
+              className="font-mono text-[11px] leading-[1.7] tracking-[.02em]"
+              style={{ color: "rgba(255,255,255,.28)" }}
+            >
+              Looking for freelance projects or full-time roles in frontend
+              &amp; full-stack engineering.
             </p>
           </div>
 
@@ -166,7 +221,8 @@ export default function ShowcaseSection() {
             href="#contact"
             className="font-mono text-[11px] font-bold tracking-[.12em] uppercase no-underline text-white inline-flex items-center gap-2"
             style={{
-              background: "linear-gradient(135deg, var(--accent), var(--accent-light))",
+              background:
+                "linear-gradient(135deg, var(--accent), var(--accent-light))",
               borderRadius: "7px",
               padding: "13px 28px",
               flexShrink: 0,
@@ -174,9 +230,7 @@ export default function ShowcaseSection() {
             }}
           >
             Get in Touch
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-              <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
+            <ArrowUpRight size={12} strokeWidth={1.8} aria-hidden="true" />
           </a>
         </motion.div>
       </section>

@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
 import { fadeUp, VIEWPORT } from "@/components/animations/variants";
+import { motion } from "framer-motion";
+import { Check } from "lucide-react";
+import { useState } from "react";
 
 export default function BlogNewsletter() {
-  const [email,     setEmail]     = useState("");
+  const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [focused,   setFocused]   = useState(false);
+  const [focused, setFocused] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +43,8 @@ export default function BlogNewsletter() {
         style={{
           position: "absolute",
           inset: 0,
-          background: "radial-gradient(60% 80% at 0% 50%, rgba(99,102,241,0.06) 0%, transparent 70%)",
+          background:
+            "radial-gradient(60% 80% at 0% 50%, rgba(99,102,241,0.06) 0%, transparent 70%)",
           pointerEvents: "none",
         }}
       />
@@ -53,7 +55,9 @@ export default function BlogNewsletter() {
           <span
             aria-hidden="true"
             style={{
-              width: "6px", height: "6px", borderRadius: "50%",
+              width: "6px",
+              height: "6px",
+              borderRadius: "50%",
               background: "var(--accent-light)",
               animation: "pulse-glow 2s ease infinite",
               flexShrink: 0,
@@ -88,7 +92,8 @@ export default function BlogNewsletter() {
             maxWidth: "340px",
           }}
         >
-          New posts on architecture, TypeScript, and shipping fast. No spam — usually one post per month.
+          New posts on architecture, TypeScript, and shipping fast. No spam —
+          usually one post per month.
         </p>
       </div>
 
@@ -102,18 +107,19 @@ export default function BlogNewsletter() {
           >
             <span
               style={{
-                width: "28px", height: "28px",
+                width: "28px",
+                height: "28px",
                 borderRadius: "50%",
                 background: "rgba(52,211,153,0.12)",
                 border: "1px solid rgba(52,211,153,0.3)",
-                display: "flex", alignItems: "center", justifyContent: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 flexShrink: 0,
               }}
               aria-hidden="true"
             >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path d="M2 6l3 3 5-5" stroke="#34d399" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <Check size={12} color="#34d399" strokeWidth={2} />
             </span>
             <span
               className="font-mono text-[11px] tracking-[.03em]"
@@ -169,7 +175,8 @@ export default function BlogNewsletter() {
               style={{
                 padding: "11px 20px",
                 borderRadius: "8px",
-                background: "linear-gradient(135deg, var(--accent), var(--accent-light))",
+                background:
+                  "linear-gradient(135deg, var(--accent), var(--accent-light))",
                 border: "none",
                 color: "#fff",
                 fontWeight: 700,
@@ -179,8 +186,12 @@ export default function BlogNewsletter() {
                 boxShadow: "0 4px 16px rgba(99,102,241,0.28)",
                 transition: "transform .2s, box-shadow .2s",
               }}
-              onMouseEnter={(e) => { (e.target as HTMLElement).style.transform = "translateY(-2px)"; }}
-              onMouseLeave={(e) => { (e.target as HTMLElement).style.transform = "translateY(0)"; }}
+              onMouseEnter={(e) => {
+                (e.target as HTMLElement).style.transform = "translateY(-2px)";
+              }}
+              onMouseLeave={(e) => {
+                (e.target as HTMLElement).style.transform = "translateY(0)";
+              }}
             >
               Subscribe
             </button>

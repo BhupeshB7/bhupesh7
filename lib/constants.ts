@@ -341,30 +341,6 @@ export const VALUES = [
   },
 ] as const;
 
-// ─── Showcase ─────────────────────────────────────────────────────────────────
-export const PROJECTS = [
-  {
-    name: "next-template",
-    desc: "Production-ready Next.js 15 starter with TypeScript, Tailwind, auth, and CI/CD wired in. Clone and ship in minutes.",
-    stack: ["Next.js", "TypeScript", "Tailwind", "Prisma"],
-    stars: 84,
-    forks: 21,
-    status: "active",
-    url: "https://github.com/bhupeshb7/next-template",
-    accent: "#c084fc",
-  },
-  {
-    name: "portfolio-v3",
-    desc: "This site — built from scratch. Canvas animations, scroll choreography, and zero UI libraries.",
-    stack: ["Next.js", "TypeScript", "Canvas API"],
-    stars: 47,
-    forks: 9,
-    status: "active",
-    url: "https://github.com/bhupeshb7/portfolio-v3",
-    accent: "#f97316",
-  },
-] as const;
-
 // Slim version used by ShowcaseSection's BlogCard (keep for backward-compat)
 export const BLOGS = [
   {
@@ -455,105 +431,99 @@ export const BLOG_POSTS = [
 
 export type BlogPost = (typeof BLOG_POSTS)[number];
 
-// ─── Contact ──────────────────────────────────────────────────────────────────
+// ─── Replace / merge into your existing constants.ts ─────────────────────────
+
+export const CONTACT_MOBILE = process.env.NEXT_PUBLIC_MOBILE || "+918581869783";
+
 export const CONTACT_INFO = {
   email: CONTACT_EMAIL,
-  calendlyUrl: "https://calendly.com/bhupeshb7/30min", // replace with real link
+  mobile: CONTACT_MOBILE,
+  calendlyUrl: "https://calendly.com/bhupeshb7/30min",
   twitterUrl: "https://twitter.com/bhupeshb7",
   timezone: "IST (UTC+5:30)",
-  responseTime: "< 24 hours",
-  availability: true, // flip to false when not accepting work
+  responseTime: "< 2 hours",
+  availability: true,
   location: "India",
 } as const;
 
+// ─── 4 developer-only collab types — plain language ──────────────────────────
 export const COLLAB_TYPES = [
   {
-    icon: "◻",
     color: "#c084fc",
-    title: "Freelance Project",
-    tagline: "You have a product. I help you ship it.",
-    desc: "End-to-end frontend or full-stack builds. I embed in your team, align with your existing stack, and deliver production-ready code with tests, docs, and zero hand-holding required.",
+    title: "Backend Development",
+    tagline: "APIs, databases, server-side logic.",
+    desc: "Node.js, PostgreSQL, Redis, REST/GraphQL. I can build from scratch or jump into an existing codebase.",
+    details: [
+      "REST & GraphQL APIs",
+      "Database design",
+      "Auth & security",
+      "Performance tuning",
+    ],
+    cta: "Let's talk",
+  },
+  {
+    color: "#00e5ff",
+    title: "Gen AI Integration",
+    tagline: "Add AI to your product.",
+    desc: "LLM APIs (OpenAI, Anthropic), RAG pipelines, embeddings, vector DBs. I help you ship AI features that actually work.",
+    details: [
+      "LLM API integration",
+      "RAG & embeddings",
+      "Vector databases",
+      "Prompt engineering",
+    ],
+    cta: "Let's talk",
+  },
+  {
+    color: "#f97316",
+    title: "Frontend & Full-Stack",
+    tagline: "End-to-end product builds.",
+    desc: "Next.js, React, TypeScript. I can own the full stack — from UI to database — or just the frontend layer.",
     details: [
       "Next.js / React apps",
-      "API design & integration",
-      "Performance audits",
-      "From MVP to scale",
+      "Full-stack builds",
+      "UI/UX implementation",
+      "API integration",
     ],
-    cta: "Start a project",
+    cta: "Let's talk",
   },
   {
-    icon: "◈",
-    color: "#f97316",
-    title: "Technical Consulting",
-    tagline: "Stuck? Let's solve it in one session.",
-    desc: "Architecture reviews, code audits, hiring pipeline advice, or just a second pair of eyes on a hard problem. Book a 30-minute Calendly call and come with the problem — leave with a plan.",
-    details: [
-      "Architecture review",
-      "Code & DX audit",
-      "Tech stack decisions",
-      "Hiring & team structure",
-    ],
-    cta: "Book 30 min call",
-    calendly: true,
-  },
-  {
-    icon: "⎇",
     color: "#34d399",
-    title: "Open Source Collaboration",
-    tagline: "Building something in public? Let's contribute.",
-    desc: "I actively contribute to tools I use daily. If you maintain a Next.js, TypeScript, or Rust project and need a consistent, high-quality contributor — open an issue or DM me.",
+    title: "Bug Fixing & Deployment",
+    tagline: "Something broken? I'll fix it.",
+    desc: "Debugging, performance issues, deployment pipelines, Docker, CI/CD. I work fast on specific problems.",
     details: [
-      "Bug fixes & features",
-      "Documentation",
-      "Performance improvements",
-      "Long-term maintainership",
+      "Debugging & fixes",
+      "Docker & deployment",
+      "CI/CD pipelines",
+      "Code review",
     ],
-    cta: "Open an issue",
-  },
-  {
-    icon: "★",
-    color: "#fbbf24",
-    title: "Content & Writing",
-    tagline: "Technical content that developers trust.",
-    desc: "Sponsored posts, technical tutorials, product reviews, or co-written deep dives for developer-focused products. I only write about tools I genuinely use — no hollow promotions.",
-    details: [
-      "Sponsored blog posts",
-      "Tutorial series",
-      "Product reviews",
-      "Video scripts / outlines",
-    ],
-    cta: "Discuss content",
+    cta: "Let's talk",
   },
 ] as const;
 
+// ─── Work process — 3 steps, plain language ───────────────────────────────────
 export const WORK_PROCESS = [
   {
     step: "01",
     color: "#c084fc",
-    title: "Discovery call",
-    dur: "30 min",
-    desc: "We talk through the problem, the timeline, the budget, and the team. I ask a lot of questions — the more context I have upfront, the fewer surprises later.",
+    title: "You reach out",
+    dur: "5 min",
+    desc: "Send a message or call. Tell me what you're building and what you need. No long forms.",
   },
   {
     step: "02",
     color: "#f97316",
-    title: "Proposal & scope",
-    dur: "1–2 days",
-    desc: "You get a written proposal with a clear scope, milestone breakdown, delivery timeline, and a fixed or capped budget. No ambiguity, no scope creep.",
+    title: "We talk",
+    dur: "< 2 hrs",
+    desc: "I reply fast. We get on a quick call or chat to understand the scope. I'll be direct about what's possible.",
   },
   {
     step: "03",
     color: "#34d399",
-    title: "Build & ship",
+    title: "I build it",
     dur: "Agreed timeline",
-    desc: "Weekly async updates. Code in a private repo with your access from day one. I push to production — not just a zip file. You can review and merge at every milestone.",
-  },
-  {
-    step: "04",
-    color: "#fbbf24",
-    title: "Handoff & support",
-    dur: "2 weeks post-ship",
-    desc: "Full docs, recorded walkthrough, and 2 weeks of included bug-fix support. You own everything — code, domain, infrastructure. No lock-in, ever.",
+    desc: "Clean code, regular updates, and I don't disappear. You get working software, not excuses.",
   },
 ] as const;
 
@@ -578,7 +548,6 @@ export const CONTACT_SOCIALS = [
     color: "#34d399",
   },
 ] as const;
-
 export const HIGHLIGHTS = [
   {
     icon: "◈",
@@ -609,3 +578,225 @@ export const HIGHLIGHTS = [
     sub: "emails & DMs",
   },
 ] as const;
+
+// ─── Projects ─────────────────────────────────────────────────────────────────
+// Add this to your existing constants.ts — replaces the slim PROJECTS array
+
+export const PROJECTS = [
+  {
+    id: "next-template",
+    featured: true,
+    type: "solo",
+    name: "next-template",
+    tagline: "Clone and ship in minutes.",
+    image: null, // e.g. "/projects/next-template.png" — set when you have a screenshot
+    desc: "Production-ready Next.js 15 starter with TypeScript, Tailwind v4, auth (NextAuth), Prisma ORM, CI/CD GitHub Actions, and Vercel deploy config wired in. Over 80 stars in 3 months.",
+    longDesc:
+      "Built out of frustration with how long it takes to bootstrap a production Next.js app. Includes opinionated folder structure, pre-configured ESLint/Prettier, Husky pre-commit hooks, type-safe env validation with Zod, and a component library scaffold. Used by 40+ developers as their base.",
+    stack: [
+      "Next.js 15",
+      "TypeScript",
+      "Tailwind v4",
+      "Prisma",
+      "NextAuth",
+      "PostgreSQL",
+    ],
+    stats: { stars: 84, forks: 21, issues: 3 },
+    status: "active", // "active" | "archived" | "wip"
+    accent: "#c084fc",
+    liveUrl: "https://next-template.bhupeshb7.me",
+    repoUrl: "https://github.com/bhupeshb7/next-template",
+    previewCode: `const config = {
+  auth:     true,   // NextAuth v5
+  db:       "pg",   // Prisma + Postgres
+  deploy:   "vercel",
+  ci:       "github-actions",
+  coverage: "vitest",
+};`,
+    highlights: [
+      "80+ GitHub stars",
+      "40+ forks",
+      "Zero config deploy",
+      "Type-safe env",
+    ],
+  },
+  {
+    id: "portfolio-v3",
+    featured: true,
+    type: "solo",
+    name: "portfolio-v3",
+    tagline: "This site. Zero UI libraries.",
+    image: null, // e.g. "/projects/portfolio-v3.png"
+    desc: "Rebuilt from scratch using Next.js 15 App Router. Canvas-based cursor trails, Framer Motion scroll choreography, and a custom animation system. Cut bundle size from 280kB to 34kB.",
+    longDesc:
+      "The third complete rewrite of my portfolio. I used it as a playground for App Router patterns, React Server Components, and edge rendering. The design system is entirely custom — no Shadcn, no Radix. Every animation is hand-tuned. LCP went from 4.2s to 0.8s.",
+    stack: ["Next.js 15", "TypeScript", "Framer Motion", "Canvas API", "CSS"],
+    stats: { stars: 47, forks: 9, issues: 1 },
+    status: "active",
+    accent: "#f97316",
+    liveUrl: "https://bhupeshb7.me",
+    repoUrl: "https://github.com/bhupeshb7/portfolio-v3",
+    previewCode: `// LCP: 4.2s → 0.8s
+// Bundle: 280kB → 34kB
+// Zero UI libraries
+// 100 Lighthouse score`,
+    highlights: [
+      "100 Lighthouse score",
+      "0.8s LCP",
+      "34kB JS bundle",
+      "Custom design system",
+    ],
+  },
+  {
+    id: "ui-blocks",
+    featured: false,
+    type: "solo",
+    name: "ui-blocks",
+    tagline: "Copy-paste component library.",
+    image: null, // e.g. "/projects/ui-blocks.png"
+    desc: "Unstyled, accessible, and composable UI primitives built on Radix UI. Dark-first design tokens, full keyboard navigation, and ARIA-compliant. Each block ships as a single file — no install required.",
+    longDesc:
+      "Frustrated with opinionated component libraries that fight your design system, I built my own collection of accessible primitives. Components are delivered as copy-paste source files — you own the code, no dependency lock-in. 20+ components covering all common patterns.",
+    stack: ["React", "TypeScript", "Radix UI", "Tailwind", "Storybook"],
+    stats: { stars: 31, forks: 7, issues: 5 },
+    status: "active",
+    accent: "#00e5ff",
+    liveUrl: "https://ui.bhupeshb7.me",
+    repoUrl: "https://github.com/bhupeshb7/ui-blocks",
+    previewCode: `<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="ghost">Open</Button>
+  </DialogTrigger>
+  <DialogContent>
+    {/* your content */}
+  </DialogContent>
+</Dialog>`,
+    highlights: [
+      "20+ components",
+      "WCAG 2.1 AA",
+      "No install needed",
+      "Storybook docs",
+    ],
+  },
+  {
+    id: "rust-cli-toolbox",
+    featured: false,
+    type: "solo",
+    name: "rust-cli-toolbox",
+    tagline: "Lightning-fast dev utilities in Rust.",
+    image: null, // e.g. "/projects/rust-cli.png"
+    desc: "A suite of CLI tools written in Rust that replaces slow Node.js scripts in my workflow — file watcher, JSON transformer, log parser, and a port scanner. 10–50× faster than the JS equivalents.",
+    longDesc:
+      "This was my Rust learning project. Instead of building something arbitrary, I rewrote the slow scripts I actually used daily. The experience was humbling and addictive. The borrow checker forces you to think about memory in a way that permanently improves how you write any language.",
+    stack: ["Rust", "Clap", "Tokio", "Serde", "Crossterm"],
+    stats: { stars: 18, forks: 4, issues: 2 },
+    status: "active",
+    accent: "#f97316",
+    liveUrl: null,
+    repoUrl: "https://github.com/bhupeshb7/rust-cli-toolbox",
+    previewCode: `$ toolbox watch ./src --ext ts,tsx \\
+    --cmd "pnpm build" \\
+    --debounce 300ms
+
+Watching 147 files...
+[12:03:01] Change detected → rebuilding`,
+    highlights: [
+      "10–50× faster",
+      "Async I/O with Tokio",
+      "Written in 3 months",
+      "Zero runtime deps",
+    ],
+  },
+  {
+    id: "collab-notes",
+    featured: false,
+    type: "group",
+    name: "collab-notes",
+    tagline: "Real-time collaborative editor.",
+    image: null, // e.g. "/projects/collab-notes.png"
+    desc: "Google Docs-style collaborative note-taking app with operational transforms, presence indicators, and offline sync. Built with a team of 3 for a hackathon — shipped in 48 hours, still running.",
+    longDesc:
+      "This was my final university project, later polished with two friends into a real product. Operational transforms handle concurrent edits without conflicts. WebSocket presence shows who's editing where. IndexedDB caches documents offline and syncs on reconnect. 200+ active users at peak.",
+    stack: [
+      "Next.js",
+      "Node.js",
+      "Socket.io",
+      "PostgreSQL",
+      "Redis",
+      "IndexedDB",
+    ],
+    stats: { stars: 29, forks: 11, issues: 4 },
+    status: "active",
+    accent: "#34d399",
+    liveUrl: "https://collab-notes.bhupeshb7.me",
+    repoUrl: "https://github.com/bhupeshb7/collab-notes",
+    team: [
+      { name: "Bhupesh Kumar", role: "Full-Stack Lead", handle: "@bhupeshb7" },
+      { name: "Arjun Sharma", role: "Backend & WS", handle: "@arjuns" },
+      { name: "Priya Nair", role: "UI / UX", handle: "@priyan" },
+    ],
+    previewCode: `// Operational Transform — merge concurrent edits
+function transform(op1: Op, op2: Op): Op {
+  if (op1.type === "insert" && op2.type === "insert") {
+    if (op1.position <= op2.position)
+      return { ...op2, position: op2.position + op1.length };
+    return op2;
+  }
+  // ... retain / delete cases
+}`,
+    highlights: [
+      "48h hackathon build",
+      "200+ peak users",
+      "Offline-first",
+      "OT conflict resolution",
+    ],
+  },
+  {
+    id: "devboard",
+    featured: false,
+    type: "group",
+    name: "devboard",
+    tagline: "Personal dev dashboard — open source.",
+    image: null, // e.g. "/projects/devboard.png"
+    desc: "All-in-one developer dashboard: GitHub activity, Wakatime stats, blog analytics, server uptime, and custom widgets. Built with a friend as an open-source alternative to paid dashboards.",
+    longDesc:
+      "We wanted a single screen showing everything relevant to our daily dev life — without paying $20/month for a SaaS product. Built with Next.js App Router and server-side polling. Widgets are composable and config-driven via a simple JSON file. The repo includes a Docker Compose setup for self-hosting.",
+    stack: [
+      "Next.js",
+      "TypeScript",
+      "Docker",
+      "GitHub API",
+      "Wakatime API",
+      "Recharts",
+    ],
+    stats: { stars: 22, forks: 8, issues: 6 },
+    status: "wip",
+    accent: "#fbbf24",
+    liveUrl: "https://devboard.bhupeshb7.me",
+    repoUrl: "https://github.com/bhupeshb7/devboard",
+    team: [
+      {
+        name: "Bhupesh Kumar",
+        role: "Lead & Architecture",
+        handle: "@bhupeshb7",
+      },
+      { name: "Rahul Verma", role: "Widgets & APIs", handle: "@rahulv" },
+    ],
+    previewCode: `// widgets.config.json
+{
+  "widgets": [
+    { "id": "github",   "position": [0,0], "size": [2,1] },
+    { "id": "wakatime", "position": [2,0], "size": [1,1] },
+    { "id": "uptime",   "position": [3,0], "size": [1,1] }
+  ]
+}`,
+    highlights: [
+      "Self-hostable",
+      "Config-driven widgets",
+      "Docker Compose",
+      "OSS alternative",
+    ],
+  },
+] as const;
+
+export type Project = (typeof PROJECTS)[number];

@@ -1,41 +1,15 @@
 "use client";
 
-import {
-  fadeUp,
-  listItem,
-  staggerContainer,
-  VIEWPORT,
-} from "@/components/animations/variants";
+import { fadeUp, listItem, staggerContainer, VIEWPORT } from "@/components/animations/variants";
 import { COLLAB_TYPES, CONTACT_INFO } from "@/lib/constants";
 import { motion } from "framer-motion";
-import {
-  ArrowUpRight,
-  CircleDot,
-  Code2,
-  GraduationCap,
-  Rocket,
-  Users,
-} from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { useState } from "react";
 
 function CollabCard({ item }: { item: (typeof COLLAB_TYPES)[number] }) {
   const [hov, setHov] = useState(false);
 
-  const iconByTitle: Record<string, React.ReactNode> = {
-    "Long-term product build": <Rocket size={14} strokeWidth={1.8} />,
-    "Feature sprint / rescue": <Code2 size={14} strokeWidth={1.8} />,
-    "Technical advisory": <Users size={14} strokeWidth={1.8} />,
-    "Mentoring / training": <GraduationCap size={14} strokeWidth={1.8} />,
-  };
-
-  const Icon = iconByTitle[item.title] ?? (
-    <CircleDot size={14} strokeWidth={1.8} />
-  );
-
-  const href =
-    "calendly" in item && item.calendly
-      ? CONTACT_INFO.calendlyUrl
-      : `mailto:${CONTACT_INFO.email}?subject=${encodeURIComponent(item.title)}`;
+  const href = `mailto:${CONTACT_INFO.email}?subject=${encodeURIComponent(item.title)}`;
 
   return (
     <motion.article
@@ -45,133 +19,65 @@ function CollabCard({ item }: { item: (typeof COLLAB_TYPES)[number] }) {
       style={{
         display: "flex",
         flexDirection: "column",
-        padding: "clamp(22px,2.8vw,32px)",
-        borderRadius: "16px",
-        background: hov ? "rgba(255,255,255,0.024)" : "rgba(255,255,255,0.014)",
-        border: `1px solid ${hov ? `${item.color}30` : "rgba(99,102,241,0.1)"}`,
+        padding: "clamp(20px,2.6vw,28px)",
+        borderRadius: "14px",
+        background: hov ? "rgba(255,255,255,.024)" : "rgba(255,255,255,.014)",
+        border: `1px solid ${hov ? `${item.color}28` : "rgba(99,102,241,.1)"}`,
         position: "relative",
         overflow: "hidden",
-        transition: "background .25s, border-color .25s",
-        gap: "16px",
+        transition: "background .22s, border-color .22s",
+        gap: "14px",
       }}
     >
       {/* Top accent */}
       <div
         aria-hidden="true"
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "2px",
-          background: hov
-            ? `linear-gradient(90deg, ${item.color}80, ${item.color}22, transparent)`
-            : `linear-gradient(90deg, ${item.color}30, transparent)`,
-          transition: "background .3s",
+          position: "absolute", top: 0, left: 0, right: 0, height: "2px",
+          background: `linear-gradient(90deg, ${item.color}${hov ? "70" : "28"}, transparent)`,
+          transition: "background .25s",
         }}
       />
 
-      {/* Watermark icon */}
-      <span
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          bottom: "-12px",
-          right: "12px",
-          fontFamily: "'Anton','Impact',sans-serif",
-          fontSize: "clamp(4rem,7vw,6rem)",
-          color: `${item.color}06`,
-          lineHeight: 1,
-          userSelect: "none",
-          pointerEvents: "none",
-          transition: "color .25s",
-        }}
-      >
-        {Icon}
-      </span>
-
-      {/* Icon + title */}
-      <div style={{ display: "flex", alignItems: "flex-start", gap: "14px" }}>
+      {/* Color dot + title */}
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <div
           aria-hidden="true"
           style={{
-            width: "38px",
-            height: "38px",
-            borderRadius: "8px",
-            background: `${item.color}10`,
-            border: `1px solid ${item.color}22`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: item.color,
-            flexShrink: 0,
+            width: "8px", height: "8px", borderRadius: "50%",
+            background: item.color, flexShrink: 0,
+            boxShadow: hov ? `0 0 10px ${item.color}` : "none",
+            transition: "box-shadow .25s",
+          }}
+        />
+        <h3
+          className="font-mono"
+          style={{
+            fontSize: "12px", fontWeight: 700, letterSpacing: ".04em",
+            color: hov ? "rgba(255,255,255,.9)" : "rgba(255,255,255,.72)",
+            transition: "color .2s",
           }}
         >
-          {Icon}
-        </div>
-        <div>
-          <h3
-            className="font-mono font-bold mb-[3px]"
-            style={{
-              fontSize: "13px",
-              color: hov ? "rgba(255,255,255,.9)" : "rgba(255,255,255,.75)",
-              letterSpacing: ".02em",
-              transition: "color .2s",
-            }}
-          >
-            {item.title}
-          </h3>
-          <p
-            className="font-mono text-[10px] tracking-[.04em]"
-            style={{ color: item.color }}
-          >
-            {item.tagline}
-          </p>
-        </div>
+          {item.title}
+        </h3>
       </div>
 
-      {/* Description */}
-      <p
-        className="font-mono"
-        style={{
-          fontSize: "11px",
-          lineHeight: 1.85,
-          color: "rgba(255,255,255,.35)",
-          letterSpacing: ".01em",
-          flex: 1,
-        }}
-      >
+      {/* Tagline */}
+      <p className="font-mono" style={{ fontSize: "10px", letterSpacing: ".04em", color: item.color, opacity: 0.8 }}>
+        {item.tagline}
+      </p>
+
+      {/* Short desc */}
+      <p className="font-mono" style={{ fontSize: "11px", lineHeight: 1.8, color: "rgba(255,255,255,.35)", letterSpacing: ".01em", flex: 1 }}>
         {item.desc}
       </p>
 
-      {/* Detail list */}
-      <ul
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "6px",
-          listStyle: "none",
-        }}
-        aria-label="What's included"
-      >
+      {/* 4 bullets — clean, minimal */}
+      <ul style={{ display: "flex", flexDirection: "column", gap: "5px", listStyle: "none", padding: 0 }}>
         {item.details.map((d) => (
-          <li
-            key={d}
-            style={{ display: "flex", alignItems: "center", gap: "8px" }}
-          >
-            <ArrowUpRight
-              aria-hidden="true"
-              size={9}
-              color={item.color}
-              strokeWidth={1.8}
-              style={{ flexShrink: 0 }}
-            />
-            <span
-              className="font-mono text-[10px] tracking-[.03em]"
-              style={{ color: "rgba(255,255,255,.4)" }}
-            >
-              {d}
-            </span>
+          <li key={d} style={{ display: "flex", alignItems: "center", gap: "7px" }}>
+            <div aria-hidden="true" style={{ width: "3px", height: "3px", borderRadius: "50%", background: item.color, flexShrink: 0 }} />
+            <span className="font-mono" style={{ fontSize: "10px", letterSpacing: ".02em", color: "rgba(255,255,255,.38)" }}>{d}</span>
           </li>
         ))}
       </ul>
@@ -179,38 +85,20 @@ function CollabCard({ item }: { item: (typeof COLLAB_TYPES)[number] }) {
       {/* CTA */}
       <a
         href={href}
-        target={"calendly" in item && item.calendly ? "_blank" : undefined}
-        rel={"calendly" in item && item.calendly ? "noreferrer" : undefined}
         style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "7px",
-          paddingTop: "14px",
-          borderTop: "1px solid rgba(255,255,255,.05)",
-          textDecoration: "none",
-          marginTop: "auto",
+          display: "inline-flex", alignItems: "center", gap: "6px",
+          paddingTop: "12px", borderTop: "1px solid rgba(255,255,255,.05)",
+          textDecoration: "none", marginTop: "auto",
         }}
         aria-label={item.cta}
       >
         <span
-          className="font-mono text-[10px] tracking-[.08em] uppercase font-bold"
-          style={{
-            color: hov ? item.color : "rgba(255,255,255,.28)",
-            transition: "color .2s",
-          }}
+          className="font-mono"
+          style={{ fontSize: "10px", letterSpacing: ".08em", textTransform: "uppercase", fontWeight: 700, color: hov ? item.color : "rgba(255,255,255,.28)", transition: "color .2s" }}
         >
           {item.cta}
         </span>
-        <ArrowUpRight
-          size={10}
-          strokeWidth={1.8}
-          aria-hidden="true"
-          style={{
-            color: hov ? item.color : "rgba(255,255,255,.2)",
-            transition: "color .2s, transform .2s",
-            transform: hov ? "translate(2px,-2px)" : "translate(0,0)",
-          }}
-        />
+        <ArrowUpRight size={10} strokeWidth={1.8} style={{ color: hov ? item.color : "rgba(255,255,255,.2)", transition: "color .2s, transform .2s", transform: hov ? "translate(2px,-2px)" : "none" }} />
       </a>
     </motion.article>
   );
@@ -219,57 +107,27 @@ function CollabCard({ item }: { item: (typeof COLLAB_TYPES)[number] }) {
 export default function CollaborationTypes() {
   return (
     <div>
-      <motion.div
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={VIEWPORT}
-        style={{ marginBottom: "clamp(24px,3vw,32px)" }}
-      >
-        <div className="flex items-center gap-[10px] mb-[10px]">
-          <div
-            className="h-px w-8 shrink-0"
-            style={{
-              background:
-                "linear-gradient(to right, var(--accent), transparent)",
-            }}
-          />
-          <span
-            className="font-mono text-[9px] tracking-[.14em] uppercase"
-            style={{ color: "var(--accent-light)" }}
-          >
-            How we can work together
+      <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={VIEWPORT} style={{ marginBottom: "clamp(22px,2.8vw,30px)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
+          <div style={{ height: "1px", width: "32px", flexShrink: 0, background: "linear-gradient(to right, var(--accent), transparent)" }} />
+          <span className="font-mono" style={{ fontSize: "9px", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent-light)" }}>
+            What I do
           </span>
         </div>
-        <h2
-          className="font-display mb-[10px]"
-          style={{
-            fontSize: "clamp(1.4rem,3vw,2rem)",
-            letterSpacing: "-.01em",
-            lineHeight: 1,
-          }}
-        >
-          COLLABORATION TYPES
+        <h2 className="font-display" style={{ fontSize: "clamp(1.4rem,3vw,2rem)", letterSpacing: "-.01em", lineHeight: 1, marginBottom: "8px" }}>
+          HOW I CAN HELP
         </h2>
-        <p
-          className="font-mono text-[clamp(10px,1.2vw,12px)] tracking-[.05em]"
-          style={{ color: "rgba(255,255,255,.25)", maxWidth: "480px" }}
-        >
-          Pick the model that fits your need. All engagements start with a
-          conversation.
+        <p className="font-mono" style={{ fontSize: "clamp(10px,1.2vw,12px)", color: "rgba(255,255,255,.25)" }}>
+          Pick what fits. All start with a quick message.
         </p>
       </motion.div>
 
       <motion.div
-        variants={staggerContainer(0.1)}
+        variants={staggerContainer(0.09)}
         initial="hidden"
         whileInView="visible"
         viewport={VIEWPORT}
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-          gap: "clamp(12px,1.8vw,18px)",
-        }}
+        style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "clamp(10px,1.6vw,16px)" }}
       >
         {COLLAB_TYPES.map((item) => (
           <CollabCard key={item.title} item={item} />

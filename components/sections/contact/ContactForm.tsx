@@ -6,129 +6,65 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import { useState } from "react";
 
+// ─── 4 fields only ────────────────────────────────────────────────────────────
 type FormData = {
   name: string;
   email: string;
-  projectType: string;
-  budget: string;
-  timeline: string;
+  need: string;
   message: string;
 };
 
-const PROJECT_TYPES = [
-  "Freelance project",
-  "Technical consulting",
-  "Open source collaboration",
-  "Content & writing",
-  "Just saying hi",
+const NEEDS = [
+  "Backend development",
+  "Gen AI integration",
+  "Frontend / Full-stack",
+  "Bug fix / Deployment",
+  "Something else",
 ] as const;
 
-const BUDGETS = [
-  "< $500",
-  "$500 – $2k",
-  "$2k – $5k",
-  "$5k – $15k",
-  "$15k+",
-  "Let's discuss",
-] as const;
-
-const TIMELINES = [
-  "ASAP",
-  "Within 1 month",
-  "1–3 months",
-  "3+ months",
-  "Flexible",
-] as const;
-
-// ─── Reusable input wrapper ───────────────────────────────────────────────────
-function Field({
-  label,
-  required = false,
-  children,
-}: {
-  label: string;
-  required?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
-      <label
-        className="font-mono text-[10px] tracking-[.1em] uppercase"
-        style={{ color: "rgba(255,255,255,.4)" }}
-      >
-        {label}
-        {required && (
-          <span
-            style={{ color: "var(--accent-light)", marginLeft: "4px" }}
-            aria-label="required"
-          >
-            *
-          </span>
-        )}
-      </label>
-      {children}
-    </div>
-  );
-}
-
-const inputBase: React.CSSProperties = {
-  width: "100%",
-  padding: "11px 14px",
-  background: "rgba(255,255,255,0.03)",
-  border: "1px solid rgba(99,102,241,0.18)",
-  borderRadius: "8px",
-  outline: "none",
-  fontFamily: "'JetBrains Mono', monospace",
-  fontSize: "12px",
-  color: "rgba(255,255,255,.75)",
-  letterSpacing: ".02em",
-  transition: "border-color .2s, background .2s",
-};
-
-// ─── Success screen ───────────────────────────────────────────────────────────
+// ─── Success ──────────────────────────────────────────────────────────────────
 function SuccessScreen() {
   return (
     <motion.div
       variants={scaleIn}
       initial="hidden"
       animate="visible"
+      role="status"
+      aria-live="polite"
       style={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: "20px",
+        gap: "18px",
         padding: "clamp(48px,6vw,72px) 24px",
         textAlign: "center",
       }}
-      role="status"
-      aria-live="polite"
     >
-      {/* Check circle */}
       <div
+        aria-hidden="true"
         style={{
-          width: "64px",
-          height: "64px",
+          width: "60px",
+          height: "60px",
           borderRadius: "50%",
-          background: "rgba(52,211,153,0.1)",
-          border: "1.5px solid rgba(52,211,153,0.3)",
+          background: "rgba(52,211,153,.1)",
+          border: "1.5px solid rgba(52,211,153,.3)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          boxShadow: "0 0 0 8px rgba(52,211,153,0.05)",
+          boxShadow: "0 0 0 8px rgba(52,211,153,.05)",
         }}
-        aria-hidden="true"
       >
-        <Check size={26} color="#34d399" strokeWidth={2.2} />
+        <Check size={24} color="#34d399" strokeWidth={2.2} />
       </div>
-
       <div>
         <h3
-          className="font-display mb-[10px]"
+          className="font-display"
           style={{
-            fontSize: "clamp(1.3rem,2.5vw,1.8rem)",
+            fontSize: "clamp(1.3rem,2.5vw,1.7rem)",
             letterSpacing: "-.01em",
             color: "rgba(255,255,255,.9)",
+            marginBottom: "10px",
           }}
         >
           MESSAGE SENT
@@ -140,38 +76,15 @@ function SuccessScreen() {
             lineHeight: 1.85,
             color: "rgba(255,255,255,.35)",
             letterSpacing: ".02em",
-            maxWidth: "340px",
           }}
         >
-          Thanks for reaching out. I'll review your brief and get back to you
-          within{" "}
+          I'll get back to you within{" "}
           <span style={{ color: "var(--accent-light)" }}>
             {CONTACT_INFO.responseTime}
           </span>
           .
         </p>
       </div>
-
-      <p
-        className="font-mono text-[10px] tracking-[.05em]"
-        style={{ color: "rgba(255,255,255,.2)" }}
-      >
-        While you wait — check out{" "}
-        <a
-          href="#projects"
-          style={{ color: "var(--accent-light)", textDecoration: "none" }}
-        >
-          my projects
-        </a>{" "}
-        or{" "}
-        <a
-          href="#blog"
-          style={{ color: "var(--accent-light)", textDecoration: "none" }}
-        >
-          latest posts
-        </a>
-        .
-      </p>
     </motion.div>
   );
 }
@@ -181,9 +94,7 @@ export default function ContactForm() {
   const [form, setForm] = useState<FormData>({
     name: "",
     email: "",
-    projectType: "",
-    budget: "",
-    timeline: "",
+    need: "",
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
@@ -203,21 +114,36 @@ export default function ContactForm() {
     e.preventDefault();
     setSubmitting(true);
     // TODO: wire to Resend / Formspree / server action
-    await new Promise((r) => setTimeout(r, 1200));
+    await new Promise((r) => setTimeout(r, 1100));
     setSubmitting(false);
     setSubmitted(true);
   };
 
-  const focusStyle = (name: string): React.CSSProperties => ({
-    ...inputBase,
+  const base: React.CSSProperties = {
+    width: "100%",
+    padding: "11px 14px",
+    background: "rgba(255,255,255,.03)",
+    border: "1px solid rgba(99,102,241,.18)",
+    borderRadius: "8px",
+    outline: "none",
+    fontFamily: "var(--font-brand-mono),'JetBrains Mono',monospace",
+    fontSize: "12px",
+    color: "rgba(255,255,255,.75)",
+    letterSpacing: ".02em",
+    transition: "border-color .2s, background .2s",
+    boxSizing: "border-box",
+  };
+
+  const focus = (name: string): React.CSSProperties => ({
+    ...base,
     borderColor:
-      focused === name ? "rgba(99,102,241,0.55)" : "rgba(99,102,241,0.18)",
+      focused === name ? "rgba(99,102,241,.55)" : "rgba(99,102,241,.18)",
     background:
-      focused === name ? "rgba(99,102,241,0.04)" : "rgba(255,255,255,0.03)",
+      focused === name ? "rgba(99,102,241,.04)" : "rgba(255,255,255,.03)",
   });
 
   const selectStyle = (name: string): React.CSSProperties => ({
-    ...focusStyle(name),
+    ...focus(name),
     appearance: "none",
     WebkitAppearance: "none",
     cursor: "pointer",
@@ -227,6 +153,28 @@ export default function ContactForm() {
     paddingRight: "36px",
   });
 
+  const label = (text: string, required?: boolean) => (
+    <label
+      className="font-mono"
+      style={{
+        fontSize: "10px",
+        letterSpacing: ".1em",
+        textTransform: "uppercase",
+        color: "rgba(255,255,255,.4)",
+      }}
+    >
+      {text}
+      {required && (
+        <span
+          style={{ color: "var(--accent-light)", marginLeft: "3px" }}
+          aria-label="required"
+        >
+          *
+        </span>
+      )}
+    </label>
+  );
+
   return (
     <motion.div
       variants={fadeUp}
@@ -235,8 +183,8 @@ export default function ContactForm() {
       viewport={VIEWPORT}
       style={{
         borderRadius: "18px",
-        background: "rgba(255,255,255,0.016)",
-        border: "1px solid rgba(99,102,241,0.14)",
+        background: "rgba(255,255,255,.016)",
+        border: "1px solid rgba(99,102,241,.14)",
         overflow: "hidden",
         position: "relative",
       }}
@@ -254,16 +202,15 @@ export default function ContactForm() {
             "linear-gradient(90deg, var(--accent), var(--accent-light), transparent)",
         }}
       />
-
       {/* Inner glow */}
       <div
         aria-hidden="true"
         style={{
           position: "absolute",
           inset: 0,
-          background:
-            "radial-gradient(50% 40% at 80% 0%, rgba(99,102,241,0.05) 0%, transparent 65%)",
           pointerEvents: "none",
+          background:
+            "radial-gradient(50% 40% at 80% 0%, rgba(99,102,241,.05) 0%, transparent 65%)",
         }}
       />
 
@@ -276,195 +223,174 @@ export default function ContactForm() {
             onSubmit={handleSubmit}
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            aria-label="Contact form"
             style={{
               padding: "clamp(28px,3.5vw,44px)",
               display: "flex",
               flexDirection: "column",
-              gap: "clamp(18px,2.5vw,24px)",
+              gap: "clamp(16px,2.2vw,22px)",
               position: "relative",
               zIndex: 1,
             }}
-            aria-label="Contact form"
           >
-            {/* Form header */}
+            {/* Header */}
             <div style={{ marginBottom: "4px" }}>
-              <div className="flex items-center gap-[10px] mb-[8px]">
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  marginBottom: "8px",
+                }}
+              >
                 <div
-                  className="h-px w-8 shrink-0"
                   style={{
+                    height: "1px",
+                    width: "32px",
                     background:
                       "linear-gradient(to right, var(--accent), transparent)",
                   }}
                 />
                 <span
-                  className="font-mono text-[9px] tracking-[.14em] uppercase"
-                  style={{ color: "var(--accent-light)" }}
+                  className="font-mono"
+                  style={{
+                    fontSize: "9px",
+                    letterSpacing: "0.14em",
+                    textTransform: "uppercase",
+                    color: "var(--accent-light)",
+                  }}
                 >
-                  Project brief
+                  Quick message
                 </span>
               </div>
               <h2
                 className="font-display"
                 style={{
-                  fontSize: "clamp(1.4rem,3vw,2rem)",
+                  fontSize: "clamp(1.3rem,2.8vw,1.9rem)",
                   letterSpacing: "-.01em",
                   lineHeight: 1,
                 }}
               >
-                TELL ME ABOUT YOUR PROJECT
+                GET IN TOUCH
               </h2>
             </div>
 
-            {/* Name + Email row */}
+            {/* Row 1: Name + Email */}
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                gap: "clamp(14px,2vw,20px)",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px,1fr))",
+                gap: "clamp(12px,1.8vw,18px)",
               }}
             >
-              <Field label="Your name" required>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "7px" }}
+              >
+                {label("Name", true)}
                 <input
                   type="text"
                   required
-                  placeholder="Jane Smith"
+                  placeholder="Your name"
                   value={form.name}
                   onChange={set("name")}
                   onFocus={() => setFocused("name")}
                   onBlur={() => setFocused(null)}
-                  style={focusStyle("name")}
+                  style={focus("name")}
                   aria-label="Your name"
                 />
-              </Field>
-
-              <Field label="Email address" required>
+              </div>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "7px" }}
+              >
+                {label("Email", true)}
                 <input
                   type="email"
                   required
-                  placeholder="jane@company.com"
+                  placeholder="you@example.com"
                   value={form.email}
                   onChange={set("email")}
                   onFocus={() => setFocused("email")}
                   onBlur={() => setFocused(null)}
-                  style={focusStyle("email")}
+                  style={focus("email")}
                   aria-label="Email address"
                 />
-              </Field>
+              </div>
             </div>
 
-            {/* Project type + budget row */}
+            {/* Row 2: What do you need */}
             <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                gap: "clamp(14px,2vw,20px)",
-              }}
+              style={{ display: "flex", flexDirection: "column", gap: "7px" }}
             >
-              <Field label="Project type" required>
-                <select
-                  required
-                  value={form.projectType}
-                  onChange={set("projectType")}
-                  onFocus={() => setFocused("projectType")}
-                  onBlur={() => setFocused(null)}
-                  style={selectStyle("projectType")}
-                  aria-label="Project type"
-                >
-                  <option value="" disabled>
-                    Select type…
+              {label("What do you need?", true)}
+              <select
+                required
+                value={form.need}
+                onChange={set("need")}
+                onFocus={() => setFocused("need")}
+                onBlur={() => setFocused(null)}
+                style={selectStyle("need")}
+                aria-label="What do you need"
+              >
+                <option value="" disabled>
+                  Select…
+                </option>
+                {NEEDS.map((n) => (
+                  <option key={n} value={n} style={{ background: "#07080f" }}>
+                    {n}
                   </option>
-                  {PROJECT_TYPES.map((t) => (
-                    <option key={t} value={t} style={{ background: "#07080f" }}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
-              <Field label="Budget range">
-                <select
-                  value={form.budget}
-                  onChange={set("budget")}
-                  onFocus={() => setFocused("budget")}
-                  onBlur={() => setFocused(null)}
-                  style={selectStyle("budget")}
-                  aria-label="Budget range"
-                >
-                  <option value="" disabled>
-                    Select budget…
-                  </option>
-                  {BUDGETS.map((b) => (
-                    <option key={b} value={b} style={{ background: "#07080f" }}>
-                      {b}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
-              <Field label="Timeline">
-                <select
-                  value={form.timeline}
-                  onChange={set("timeline")}
-                  onFocus={() => setFocused("timeline")}
-                  onBlur={() => setFocused(null)}
-                  style={selectStyle("timeline")}
-                  aria-label="Project timeline"
-                >
-                  <option value="" disabled>
-                    Select timeline…
-                  </option>
-                  {TIMELINES.map((t) => (
-                    <option key={t} value={t} style={{ background: "#07080f" }}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
-              </Field>
+                ))}
+              </select>
             </div>
 
-            {/* Message */}
-            <Field label="Project details" required>
+            {/* Row 3: Message */}
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "7px" }}
+            >
+              {label("Brief description", true)}
               <textarea
                 required
-                rows={5}
-                placeholder="Describe your project — what are you building, what problem does it solve, where are you stuck, what does success look like?"
+                rows={4}
+                placeholder="What are you building? What's the problem? Keep it short — we'll talk details on a call."
                 value={form.message}
                 onChange={set("message")}
                 onFocus={() => setFocused("message")}
                 onBlur={() => setFocused(null)}
                 style={{
-                  ...focusStyle("message"),
+                  ...focus("message"),
                   resize: "vertical",
-                  minHeight: "120px",
+                  minHeight: "110px",
                   lineHeight: 1.8,
                 }}
-                aria-label="Project details"
+                aria-label="Brief description"
               />
-            </Field>
+            </div>
 
-            {/* Submit row */}
+            {/* Submit */}
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
                 flexWrap: "wrap",
-                gap: "16px",
+                gap: "14px",
               }}
             >
               <p
-                className="font-mono text-[9px] tracking-[.05em]"
-                style={{ color: "rgba(255,255,255,.18)" }}
+                className="font-mono"
+                style={{
+                  fontSize: "9px",
+                  letterSpacing: ".04em",
+                  color: "rgba(255,255,255,.18)",
+                }}
               >
-                * required fields · your data is never sold or shared
+                * required · I reply within {CONTACT_INFO.responseTime}
               </p>
-
               <button
                 type="submit"
                 disabled={submitting}
                 className="btn-primary"
-                style={{ minWidth: "160px", opacity: submitting ? 0.7 : 1 }}
-                aria-label={submitting ? "Sending message…" : "Send message"}
+                style={{ minWidth: "148px", opacity: submitting ? 0.72 : 1 }}
+                aria-label={submitting ? "Sending…" : "Send message"}
               >
                 {submitting ? (
                   <span
@@ -480,9 +406,9 @@ export default function ContactForm() {
                         width: "12px",
                         height: "12px",
                         borderRadius: "50%",
-                        border: "1.5px solid rgba(255,255,255,0.3)",
+                        border: "1.5px solid rgba(255,255,255,.3)",
                         borderTopColor: "#fff",
-                        animation: "spin 0.7s linear infinite",
+                        animation: "spin .7s linear infinite",
                         display: "inline-block",
                       }}
                     />
@@ -490,12 +416,7 @@ export default function ContactForm() {
                   </span>
                 ) : (
                   <>
-                    Send Message
-                    <ArrowRight
-                      size={12}
-                      strokeWidth={1.8}
-                      aria-hidden="true"
-                    />
+                    Send Message <ArrowRight size={12} strokeWidth={1.8} />
                   </>
                 )}
               </button>

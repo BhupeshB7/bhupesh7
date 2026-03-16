@@ -168,11 +168,40 @@ body {
   }
 }
 
-/* ─── Component Classes ──────────────────────────────────────────────────────── */
+@keyframes orbit-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-/* Tag pill */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ─── Tag pill ───────────────────────────────────────────────────────────────── */
 .tag-pill {
-  @apply inline-block text-[9px] tracking-[.1em] uppercase;
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: rgba(129, 140, 248, 0.65);
   border: 1px solid rgba(99, 102, 241, 0.18);
   border-radius: 3px;
@@ -180,10 +209,15 @@ body {
   background: rgba(99, 102, 241, 0.05);
 }
 
-/* Primary button */
+/* ─── Primary button ─────────────────────────────────────────────────────────── */
 .btn-primary {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg no-underline;
-  font-family: "JetBrains Mono", monospace;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: var(--font-brand-mono), "JetBrains Mono", monospace;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -243,9 +277,14 @@ body {
   transition-duration: 0.08s;
 }
 
-/* Ghost button */
+/* ─── Ghost button ───────────────────────────────────────────────────────────── */
 .btn-ghost {
-  @apply inline-flex items-center justify-center gap-2 rounded-lg no-underline;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 8px;
+  text-decoration: none;
   font-family: var(--font-brand-mono), "JetBrains Mono", monospace;
   font-size: 11px;
   font-weight: 700;
@@ -299,9 +338,56 @@ body {
   outline-offset: 2px;
 }
 
-/* Social link */
+/* ─── Small button variant ───────────────────────────────────────────────────── */
+.btn-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-family: var(--font-brand-mono), "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.btn-sm-accent {
+  color: #fff;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.btn-sm-accent:hover {
+  background: rgba(99, 102, 241, 0.28);
+  border-color: rgba(129, 140, 248, 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-sm-ghost {
+  color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-sm-ghost:hover {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+/* ─── Social link ────────────────────────────────────────────────────────────── */
 .social-link {
-  @apply flex items-center gap-2 no-underline text-[11px] tracking-[.05em];
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.05em;
   font-family: "JetBrains Mono", monospace;
   color: rgba(255, 255, 255, 0.3);
   transition: color 0.2s;
@@ -312,7 +398,11 @@ body {
 }
 
 .social-icon {
-  @apply flex items-center justify-center rounded-[6px] text-[10px];
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 10px;
   width: 28px;
   height: 28px;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -326,6 +416,7 @@ body {
   transform: scale(1.1);
 }
 
+/* ─── About hero CTA responsive ──────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .about-hero-ctas .btn-primary,
   .about-hero-ctas .btn-ghost {
@@ -335,7 +426,7 @@ body {
   }
 }
 
-/* Stat */
+/* ─── Stat ───────────────────────────────────────────────────────────────────── */
 .stat-value {
   font-family: "Anton", "Impact", sans-serif;
   font-size: clamp(1.5rem, 2.8vw, 2.2rem);
@@ -360,7 +451,7 @@ body {
   align-self: center;
 }
 
-/* Card base */
+/* ─── Card base ──────────────────────────────────────────────────────────────── */
 .card {
   background: rgba(255, 255, 255, 0.018);
   border: 1px solid var(--border-subtle);
@@ -378,7 +469,7 @@ body {
   margin-bottom: 18px;
 }
 
-/* Trail dot */
+/* ─── Trail dot ──────────────────────────────────────────────────────────────── */
 .trail-dot {
   position: fixed;
   top: 0;
@@ -390,7 +481,7 @@ body {
   will-change: transform, opacity;
 }
 
-/* Section separator */
+/* ─── Section separator ──────────────────────────────────────────────────────── */
 .section-separator {
   position: absolute;
   top: 0;
@@ -405,7 +496,7 @@ body {
   );
 }
 
-/* Nav link */
+/* ─── Nav link ───────────────────────────────────────────────────────────────── */
 .nav-link {
   font-family: "JetBrains Mono", monospace;
   font-size: 10.5px;
@@ -436,7 +527,7 @@ body {
   width: 100%;
 }
 
-/* Nav CTA */
+/* ─── Nav CTA ────────────────────────────────────────────────────────────────── */
 .nav-cta {
   display: inline-flex;
   align-items: center;
@@ -465,6 +556,56 @@ body {
 }
 .nav-cta:active {
   transform: translateY(0);
+}
+
+/* ─── Project-specific ───────────────────────────────────────────────────────── */
+.project-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.016);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  transition:
+    border-color 0.3s,
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.project-card:hover {
+  border-color: rgba(99, 102, 241, 0.28);
+  transform: translateY(-4px);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(99, 102, 241, 0.14);
+}
+
+.project-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.project-filter-btn:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  color: var(--accent-light);
+}
+
+.project-filter-btn.active {
+  border-color: rgba(99, 102, 241, 0.5);
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--accent-light);
 }
 
 /* ─── Responsive overrides ───────────────────────────────────────────────────── */

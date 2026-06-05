@@ -1,0 +1,20 @@
+[
+  {
+    "id": "u1",
+    "name": "Bhupesh Kumar",
+    "email": "b29.bhupesh@gmail.com",
+    "password": "bhupesh@1234",
+    "mobile": "+918581869783",
+    "role": "admin",
+    "avatar": "https://ik.imagekit.io/bhupeshb7/img_CiOKjIdaPH.jpg"
+  },
+  {
+    "id": "u2",
+    "name": "Guest User",
+    "email": "guest@example.com",
+    "password": "123456",
+    "mobile": "+918889995787",
+    "role": "user",
+    "avatar": "/images/avatar2.png"
+  }
+]

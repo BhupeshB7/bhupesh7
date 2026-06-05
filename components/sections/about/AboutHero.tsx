@@ -129,7 +129,7 @@ function PhotoFrame() {
 
       {/* Floating stat chips */}
       <FloatChip
-        label="5yr+ exp"
+        label="2yr+ exp"
         color="var(--accent-light)"
         style={{ position: "absolute", bottom: "14%", left: "-28px" }}
       />

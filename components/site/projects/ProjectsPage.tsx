@@ -2133,24 +2133,192 @@ const caseStudies = [
     id: "01",
     title: "Cloud Storage Platform",
     tag: "Storage",
+    image: "/images/project1.png",
+    liveUrl: "https://cloud-storage-bhupeshb7.vercel.app",
+    summary:
+      "A Drive-style cloud storage product with folders, uploads, auth, sharing, and a polished file-management experience.",
     component: <Project01 />,
   },
   {
     id: "02",
     title: "Distributed Ticket Booking",
     tag: "Distributed",
+    image: "/images/project2.png",
+    liveUrl: "https://distributed-ticket-management.vercel.app",
+    summary:
+      "A distributed ticket booking system focused on seat locking, concurrency, reliability, and real-world booking flows.",
     component: <Project02 />,
   },
   {
     id: "03",
     title: "E-Commerce Backend",
     tag: "Commerce",
+    image: "/images/project3.png",
+    liveUrl: "",
+    summary:
+      "A backend architecture case study for products, carts, orders, admin operations, validation, and secure APIs.",
     component: <Project03 />,
   },
 ];
 
+type CaseStudy = (typeof caseStudies)[number];
+
+function ProjectPreview({ project }: { project: CaseStudy }) {
+  return (
+    <motion.div
+      key={`preview-${project.id}`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.42, ease: "easeOut" } as Transition}
+      className="relative left-1/2 mt-12 w-screen -translate-x-1/2 overflow-hidden px-5 py-12 lg:w-[92vw] lg:px-10 lg:py-16"
+    >
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `radial-gradient(ellipse 55% 45% at 50% 42%, ${c}12, transparent 70%)`,
+        }}
+      />
+
+      <div className="relative mx-auto w-full max-w-7xl">
+        <div className="relative z-10 mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl">
+            <div
+              className="mb-4 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.22em]"
+              style={{ color: c, fontFamily: "'DM Mono', monospace" }}
+            >
+              <span
+                className="h-1.5 w-1.5 rounded-full"
+                style={{ background: c, boxShadow: `0 0 18px ${c}` }}
+              />
+              {project.id} / {project.tag} / Product Preview
+            </div>
+            <h2
+              className="text-4xl font-bold leading-tight sm:text-5xl lg:text-[56px]"
+              style={{ color: theme.text.primary, fontFamily: "Syne, sans-serif" }}
+            >
+              {project.title}
+            </h2>
+            <p
+              className="mt-4 max-w-2xl text-[15px] leading-relaxed"
+              style={{ color: theme.text.secondary }}
+            >
+              {project.summary}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            {project.liveUrl ? (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[12px] font-semibold transition-all duration-200"
+                style={{
+                  background: c,
+                  color: theme.accent.primaryForeground,
+                  boxShadow: `0 0 28px ${c}32`,
+                  fontFamily: "'DM Mono', monospace",
+                }}
+              >
+                View Live Project <ExternalLink size={14} />
+              </a>
+            ) : null}
+            <a
+              href={`#case-study-${project.id}`}
+              className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[12px] font-semibold transition-all duration-200"
+              style={{
+                color: theme.text.primary,
+                background: theme.surface[1],
+                border: `1px solid ${theme.border.soft}`,
+                fontFamily: "'DM Mono', monospace",
+              }}
+            >
+              Case Study <ArrowRight size={14} />
+            </a>
+          </div>
+        </div>
+
+        <div className="relative z-10">
+          <div
+            className="pointer-events-none absolute -inset-6 rounded-[34px] opacity-80 blur-2xl"
+            style={{
+              background: `linear-gradient(135deg, ${c}22, transparent 36%, ${c}10 72%, transparent)`,
+            }}
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.985 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.48, ease: "easeOut" } as Transition}
+            className="relative overflow-hidden rounded-[26px]"
+            style={{
+              background: `linear-gradient(180deg, ${theme.surface[1]}, ${theme.bg.base})`,
+              border: `1px solid ${theme.border.soft}`,
+              boxShadow:
+                "0 34px 110px rgba(0,0,0,0.48), inset 0 1px 0 rgba(255,255,255,0.04)",
+            }}
+          >
+            <div
+              className="flex h-11 items-center justify-between px-4"
+              style={{
+                background: "rgba(255,255,255,0.025)",
+                borderBottom: `1px solid ${theme.border.subtle}`,
+              }}
+            >
+              <div className="flex items-center gap-2">
+                {["#ef4444", "#f59e0b", "#22c55e"].map((dot) => (
+                  <span
+                    key={dot}
+                    className="h-2.5 w-2.5 rounded-full"
+                    style={{ background: dot, opacity: 0.72 }}
+                  />
+                ))}
+              </div>
+              <div
+                className="hidden max-w-md flex-1 items-center justify-center rounded-full px-4 py-1.5 text-center text-[10px] sm:flex"
+                style={{
+                  color: theme.text.muted,
+                  background: theme.bg.base,
+                  border: `1px solid ${theme.border.subtle}`,
+                  fontFamily: "'DM Mono', monospace",
+                }}
+              >
+                {project.liveUrl || "case-study.local"}
+              </div>
+              <span className="h-2.5 w-10" />
+            </div>
+
+            <div className="relative bg-black/20">
+              <img
+                src={project.image}
+                alt={`${project.title} project preview`}
+                className="block h-auto w-full"
+                style={{ filter: "saturate(0.98) contrast(1.02)" }}
+              />
+              <div
+                className="pointer-events-none absolute inset-x-0 top-0 h-[16%]"
+                style={{
+                  background: "linear-gradient(180deg, rgba(0,0,0,0.22), transparent)",
+                }}
+              />
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-[18%]"
+                style={{
+                  background: "linear-gradient(180deg, transparent, rgba(0,0,0,0.30))",
+                }}
+              />
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Projects() {
   const [activeTab, setActiveTab] = useState("01");
+  const activeProject =
+    caseStudies.find((project) => project.id === activeTab) ?? caseStudies[0];
 
   return (
     <main>
@@ -2174,48 +2342,66 @@ export default function Projects() {
           }}
         />
 
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-6 lg:px-8">
-          <div
-            className="sticky top-0 py-4 z-20"
-            style={{
-              background: `${theme.bg.subtle}ee`,
-              backdropFilter: "blur(12px)",
-              borderBottom: `1px solid ${theme.border.subtle}`,
-            }}
-          >
-            <div className="flex items-center gap-1">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-8">
+          <div className="sticky top-0 z-20 py-4">
+            <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-8 gap-y-3">
               {caseStudies.map((cs) => (
                 <button
                   key={cs.id}
                   onClick={() => setActiveTab(cs.id)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-semibold transition-all duration-200"
+                  className="relative flex min-h-[44px] flex-1 basis-[220px] items-center gap-3 overflow-hidden px-0 py-2 text-left text-[11px] font-semibold transition-all duration-200"
                   style={{
-                    color: activeTab === cs.id ? c : theme.text.muted,
-                    background:
+                    color:
                       activeTab === cs.id
-                        ? theme.accent.tintStrong
-                        : "transparent",
-                    border: `1px solid ${activeTab === cs.id ? theme.accent.border : "transparent"}`,
+                        ? theme.text.primary
+                        : theme.text.muted,
+                    background: "transparent",
+                    border: "0",
                     fontFamily: "'DM Mono', monospace",
                     cursor: "pointer",
+                    boxShadow: "none",
                   }}
                 >
+                  {activeTab === cs.id ? (
+                    <span
+                      className="absolute inset-x-0 bottom-0 h-px"
+                      style={{
+                        background: `linear-gradient(90deg, ${c}, ${c}20, transparent)`,
+                      }}
+                    />
+                  ) : null}
                   <span
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
                     style={{
                       color:
                         activeTab === cs.id
-                          ? `${c}70`
+                          ? c
                           : `${theme.text.muted}60`,
+                      background: "transparent",
+                      border: `1px solid ${activeTab === cs.id ? theme.accent.border : "transparent"}`,
                     }}
                   >
                     {cs.id}
                   </span>
-                  <span className="hidden sm:inline">{cs.title}</span>
-                  <span className="sm:hidden">{cs.tag}</span>
+                  <span className="min-w-0">
+                    <span className="block truncate">{cs.title}</span>
+                    <span
+                      className="mt-0.5 block text-[9px] uppercase tracking-[0.18em]"
+                      style={{
+                        color: activeTab === cs.id ? c : theme.text.faint,
+                      }}
+                    >
+                      {cs.tag}
+                    </span>
+                  </span>
                 </button>
               ))}
             </div>
           </div>
+
+          <AnimatePresence mode="wait">
+            <ProjectPreview project={activeProject} />
+          </AnimatePresence>
 
           <AnimatePresence mode="wait">
             {caseStudies.map(
@@ -2223,6 +2409,7 @@ export default function Projects() {
                 cs.id === activeTab && (
                   <motion.div
                     key={cs.id}
+                    id={`case-study-${cs.id}`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}

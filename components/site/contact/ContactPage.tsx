@@ -46,7 +46,7 @@ const channels: ContactChannel[] = [
   {
     label: "Book meeting",
     title: "Schedule a call",
-    value: "Cal.com booking",
+    value: "Calendly.com booking",
     href: CONTACT.bookingUrl,
     body: "Pick a slot for a focused discovery call. Add your goal in the booking note.",
     external: true,

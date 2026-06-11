@@ -1,6 +1,6 @@
 export type ThemeName = "green" | "yellow" | "blue" | "purple" | "pink" | "orange" | "teal" | "amber" | "crimson" | "violet" | "emerald" | "cyan" | "red";
 
-export const ACTIVE_THEME: ThemeName = "red";
+export const ACTIVE_THEME: ThemeName = "green";
 
 const accents: Record<ThemeName, {
   primary: string;

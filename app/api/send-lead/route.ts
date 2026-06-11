@@ -1,73 +1,107 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { LeadData, ProjectBriefData } from "@/lib/types";
+import type { LeadData, Message, ProjectBriefData } from "@/lib/types";
 
-const resend = new Resend(process.env.RESEND_API_KEY!);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const TO_EMAIL = process.env.LEAD_EMAIL ?? "contact@bhupesh.me";
 const FROM_EMAIL = process.env.FROM_EMAIL ?? "leads@bhupesh.me";
 
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function isEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function validateLead(lead: LeadData) {
+  if (!lead) return "Lead data is required.";
+  if (!lead.fullName || lead.fullName.trim().length < 2) return "Name is required.";
+  if (!lead.email || !isEmail(lead.email)) return "Valid email is required.";
+  if (!lead.phone || lead.phone.trim().length < 8) return "Phone or WhatsApp is required.";
+  if (!lead.budgetRange) return "Budget range is required.";
+  if (!lead.timeline) return "Timeline is required.";
+  return "";
+}
+
 function buildEmailHtml(
   lead: LeadData,
   brief: ProjectBriefData,
-  meta: { chatId: string; messageCount: number; date: string }
-): string {
-  return `
-<!DOCTYPE html>
+  meta: {
+    chatId: string;
+    messageCount: number;
+    date: string;
+    messages?: Message[];
+  },
+) {
+  const leadRows = [
+    ["Name", lead.fullName],
+    ["Email", lead.email],
+    ["Phone / WhatsApp", lead.phone],
+    ["Company", lead.company || "Not provided"],
+    ["Budget", lead.budgetRange],
+    ["Timeline", lead.timeline],
+    ["Preferred Contact", lead.preferredContact],
+    ["Notes", lead.notes || "Not provided"],
+  ];
+
+  const conversation = meta.messages?.length
+    ? meta.messages
+        .map(
+          (message) => `
+          <div style="margin-bottom:12px;padding:12px;border-radius:10px;background:${message.role === "user" ? "#151525" : "#101820"};">
+            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#818cf8;font-weight:700;margin-bottom:6px;">${message.role}</div>
+            <div style="font-size:13px;line-height:1.6;color:#e4e4e7;white-space:pre-wrap;">${escapeHtml(message.content)}</div>
+          </div>`,
+        )
+        .join("")
+    : "<p>No conversation messages were attached.</p>";
+
+  return `<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"><style>
-  body { font-family: 'Courier New', monospace; background: #0a0a0a; color: #e5e5e5; margin: 0; padding: 24px; }
-  .card { background: #111; border: 1px solid #222; border-radius: 12px; padding: 24px; margin-bottom: 16px; }
-  .label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #7c3aed; margin-bottom: 6px; }
-  .value { font-size: 14px; color: #e5e5e5; margin-bottom: 16px; }
-  .title { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; font-family: sans-serif; }
-  .tag { display: inline-block; background: #1a1a2e; border: 1px solid #7c3aed44; color: #a78bfa; padding: 2px 8px; border-radius: 6px; font-size: 11px; margin: 2px; }
-  .feature { padding: 4px 0; color: #a1a1aa; font-size: 13px; }
-  .feature::before { content: "→ "; color: #7c3aed; }
-  .meta { font-size: 11px; color: #555; }
-  h2 { font-family: sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #7c3aed; margin: 0 0 16px; }
-</style></head>
-<body>
-  <div style="max-width: 600px; margin: 0 auto;">
-    <div style="margin-bottom: 24px; border-bottom: 1px solid #222; padding-bottom: 16px;">
-      <div class="title">New Project Lead</div>
-      <div class="meta">${new Date(meta.date).toLocaleString()} · ${meta.messageCount} messages · ${meta.chatId.slice(0, 8)}</div>
+<body style="font-family:Arial,sans-serif;background:#08080f;color:#f4f4f5;margin:0;padding:24px;">
+  <div style="max-width:760px;margin:0 auto;">
+    <div style="margin-bottom:24px;border-bottom:1px solid #27273a;padding-bottom:16px;">
+      <h1 style="margin:0;font-size:28px;">New AI Project Lead</h1>
+      <p style="margin:8px 0 0;color:#a1a1aa;">${escapeHtml(new Date(meta.date).toLocaleString())} | ${meta.messageCount} messages | ${escapeHtml(meta.chatId.slice(0, 8))}</p>
     </div>
 
-    <div class="card">
-      <h2>Lead Information</h2>
-      <div class="label">Name</div><div class="value">${lead.fullName}</div>
-      <div class="label">Email</div><div class="value"><a href="mailto:${lead.email}" style="color: #7c3aed;">${lead.email}</a></div>
-      ${lead.company ? `<div class="label">Company</div><div class="value">${lead.company}</div>` : ""}
-      <div class="label">Budget</div><div class="value">${lead.budgetRange}</div>
-      <div class="label">Timeline</div><div class="value">${lead.timeline}</div>
-    </div>
+    <section style="background:#11111a;border:1px solid #27273a;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <h2 style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#818cf8;">Lead Information</h2>
+      ${leadRows
+        .map(
+          ([label, value]) => `
+          <div style="margin-bottom:12px;">
+            <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#818cf8;font-weight:700;">${label}</div>
+            <div style="font-size:15px;color:#f4f4f5;">${escapeHtml(value)}</div>
+          </div>`,
+        )
+        .join("")}
+    </section>
 
-    <div class="card">
-      <h2>Project Brief</h2>
-      <div class="label">Project Name</div>
-      <div style="font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 16px; font-family: sans-serif;">${brief.projectName}</div>
+    <section style="background:#11111a;border:1px solid #27273a;border-radius:16px;padding:20px;margin-bottom:16px;">
+      <h2 style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#818cf8;">Project Brief</h2>
+      <h3 style="font-size:22px;margin:0 0 14px;">${escapeHtml(brief.projectName)}</h3>
+      <p style="line-height:1.6;color:#e4e4e7;">${escapeHtml(brief.overview)}</p>
+      <p><strong>Target Users:</strong> ${escapeHtml(brief.targetUsers)}</p>
+      <p><strong>Complexity:</strong> ${escapeHtml(brief.complexity)}</p>
+      <p><strong>Core Features:</strong></p>
+      <ul>${brief.coreFeatures.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      <p><strong>Tech Stack:</strong> ${brief.techStack.map(escapeHtml).join(", ")}</p>
+      <p><strong>Future Enhancements:</strong></p>
+      <ul>${brief.futureEnhancements.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+    </section>
 
-      <div class="label">Overview</div><div class="value">${brief.overview}</div>
-      <div class="label">Target Users</div><div class="value">${brief.targetUsers}</div>
-
-      <div class="label">Core Features</div>
-      <div style="margin-bottom: 16px;">
-        ${brief.coreFeatures.map((f) => `<div class="feature">${f}</div>`).join("")}
-      </div>
-
-      <div class="label">Tech Stack</div>
-      <div style="margin-bottom: 16px;">
-        ${brief.techStack.map((t) => `<span class="tag">${t}</span>`).join("")}
-      </div>
-
-      <div class="label">Complexity</div><div class="value">${brief.complexity}</div>
-
-      <div class="label">Future Enhancements</div>
-      <div>
-        ${brief.futureEnhancements.map((e) => `<div class="feature" style="color: #71717a;">${e}</div>`).join("")}
-      </div>
-    </div>
+    <section style="background:#11111a;border:1px solid #27273a;border-radius:16px;padding:20px;">
+      <h2 style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#818cf8;">Conversation Transcript</h2>
+      ${conversation}
+    </section>
   </div>
 </body>
 </html>`;
@@ -75,16 +109,34 @@ function buildEmailHtml(
 
 export async function POST(req: NextRequest) {
   try {
-    const { lead, brief, meta } = await req.json() as {
+    const { lead, brief, meta } = (await req.json()) as {
       lead: LeadData;
       brief: ProjectBriefData;
-      meta: { chatId: string; messageCount: number; date: string };
+      meta: {
+        chatId: string;
+        messageCount: number;
+        date: string;
+        messages?: Message[];
+      };
     };
+
+    if (!brief || !meta) {
+      return NextResponse.json(
+        { error: "Project brief and metadata are required." },
+        { status: 400 },
+      );
+    }
+
+    const error = validateLead(lead);
+    if (error) {
+      return NextResponse.json({ error }, { status: 400 });
+    }
 
     await resend.emails.send({
       from: FROM_EMAIL,
       to: TO_EMAIL,
-      subject: `New Project Lead: ${brief.projectName} — ${lead.fullName}`,
+      replyTo: lead.email,
+      subject: `New AI Project Lead: ${brief.projectName} - ${lead.fullName}`,
       html: buildEmailHtml(lead, brief, meta),
     });
 

@@ -6,8 +6,6 @@ import type {
   ConsultantSession,
   Message,
   LeadData,
-  ProjectBriefData,
-  ConsultantPhase,
 } from "../lib/types";
 
 const MAX_MESSAGES = 100;
@@ -53,7 +51,7 @@ export function useConsultant() {
       messageCount: s.messageCount + 1,
     }));
 
-    await sendToAI([...session.messages, userMsg], "discovery");
+    await sendToAI([...session.messages, userMsg]);
   }, [session, updateSession]);
 
   const sendMessage = useCallback(async (content: string) => {
@@ -76,10 +74,10 @@ export function useConsultant() {
       messageCount: s.messageCount + 1,
     }));
 
-    await sendToAI(updatedMessages, session.phase);
+    await sendToAI(updatedMessages);
   }, [session, updateSession]);
 
-  const sendToAI = useCallback(async (messages: Message[], phase: ConsultantPhase) => {
+  const sendToAI = useCallback(async (messages: Message[]) => {
     setIsTyping(true);
     try {
       const res = await fetch("/api/chat", {
@@ -110,8 +108,10 @@ export function useConsultant() {
         progress: progress ?? s.progress,
         phase: readyForBrief ? "brief-ready" : s.phase,
       }));
-    } catch (err: any) {
-      setError(err?.message ?? "Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : "Something went wrong. Please try again.",
+      );
     } finally {
       setIsTyping(false);
     }
@@ -158,6 +158,7 @@ export function useConsultant() {
             chatId: session.chatId,
             messageCount: session.messageCount,
             date: new Date().toISOString(),
+            messages: session.messages,
           },
         }),
       });

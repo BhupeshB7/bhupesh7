@@ -1,8 +1,22 @@
-import Projects from "@/components/latest-design/Projects";
-import React from "react";
+import ProjectsPage from "@/components/site/projects/ProjectsPage";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, graphSchema, pageMetadata, projectsSchema } from "@/lib/seo";
 
-const page = () => {
-  return <Projects />;
-};
+export const metadata = pageMetadata("/project");
 
-export default page;
+export default function ProjectsRoute() {
+  return (
+    <>
+      <JsonLd
+        data={graphSchema([
+          projectsSchema(),
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Projects", path: "/project" },
+          ]),
+        ])}
+      />
+      <ProjectsPage />
+    </>
+  );
+}

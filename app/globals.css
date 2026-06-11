@@ -47,6 +47,17 @@ body {
   body[data-custom-cursor="true"] button {
     cursor: none;
   }
+
+  body[data-custom-cursor="true"] .native-cursor-zone,
+  body[data-custom-cursor="true"] .native-cursor-zone * {
+    cursor: auto;
+  }
+
+  body[data-custom-cursor="true"] input,
+  body[data-custom-cursor="true"] textarea,
+  body[data-custom-cursor="true"] [contenteditable="true"] {
+    cursor: text;
+  }
 }
 html,
 body {

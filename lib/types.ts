@@ -29,9 +29,20 @@ export interface ProjectBriefData {
 export interface LeadData {
   fullName: string;
   email: string;
+  phone: string;
   company: string;
   budgetRange: string;
   timeline: string;
+  preferredContact: "Email" | "WhatsApp" | "Call" | "Google Meet";
+  notes: string;
+}
+
+export interface ContactInquiryData {
+  fullName: string;
+  email: string;
+  phone: string;
+  company: string;
+  message: string;
 }
 
 export type ConsultantPhase =

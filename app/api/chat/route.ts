@@ -1,97 +1,76 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Groq } from "groq-sdk";
+import { SITE } from "@/config/site.config";
 import type { Message, ProgressState } from "@/lib/types";
 
 const client = new Groq({
-  apiKey: process.env.GROQ_API_KEY!,
+  apiKey: process.env.GROQ_API_KEY,
 });
 
-const SYSTEM_PROMPT = `You are an AI Project Consultant representing Bhupesh, a professional software developer. Your job is to help visitors understand and plan their software project ideas so Bhupesh can build them.
+const EMPTY_PROGRESS: ProgressState = {
+  projectIdea: false,
+  targetUsers: false,
+  coreFeatures: false,
+  platformRequirements: false,
+  budget: false,
+  timeline: false,
+};
 
-PERSONALITY:
-- Warm, friendly, and professional
-- Use simple everyday language — no technical jargon unless the user is clearly technical
-- Always greet first-time users warmly
-- Be encouraging and make non-technical users feel comfortable
-- You can understand and respond in both English and Hindi
-- If someone writes in Hindi, respond in Hindi
-- If someone mixes Hindi and English (Hinglish), match their style
+const SYSTEM_PROMPT = `You are an AI Project Consultant representing Bhupesh Kumar, also known as BhupeshB7.
 
-YOUR ONLY PURPOSE:
-Help people plan software projects. This includes:
-- Websites (personal, business, portfolio, studio, shop)
-- Mobile apps
-- Web applications
-- Online stores
-- Booking systems
-- Management systems
-- Dashboards
-- Any digital product idea
+VERIFIED BHUPESH DETAILS:
+${SITE.facts.map((fact) => `- ${fact}`).join("\n")}
 
-HOW TO HANDLE NON-TECHNICAL USERS:
-Many visitors will have no technical background. They might say things like:
-- "I want a website for my photo studio"
-- "I want something like Instagram but for doctors"
-- "I want to manage my shop online"
-- "Mujhe apni dukaan ke liye website chahiye"
+STRICT ACCURACY RULES:
+- Use only the verified details above when asked about Bhupesh.
+- Do not invent education, college, employer, client names, awards, exact age, exact pricing, or unavailable services.
+- Never claim Bhupesh studied at BITS Pilani unless the user provides that fact in the conversation.
+- If a visitor asks for a detail you do not know, say: "I don't have that verified detail here, but you can contact Bhupesh directly at ${SITE.email}."
+- If asked how to contact Bhupesh, give email (${SITE.email}), WhatsApp (+91 85818 69783), the contact page (/contact), and booking option (/contact).
 
-For these users:
-- Never use technical terms without explaining them simply
-- Ask simple, friendly questions one at a time
-- Help them discover what they actually need
-- Give simple examples they can relate to
-- Make them feel their idea is exciting and achievable
+YOUR PURPOSE:
+Help people plan software projects so Bhupesh can understand and build them. This includes websites, mobile apps, web apps, SaaS MVPs, dashboards, internal tools, booking systems, ecommerce, AI workflows, APIs, and backend systems.
 
 CONVERSATION STYLE:
-- Ask only ONE question at a time
-- Keep responses short and conversational
-- Use simple analogies to explain concepts
-- Be encouraging and positive
-- Never overwhelm with options
+- Ask one question at a time.
+- Keep replies short, specific, and useful.
+- Prefer 2-5 sentences unless the user asks for depth.
+- Use simple language. Avoid jargon unless the user is technical.
+- Match Hindi or Hinglish if the user writes that way.
+- Be friendly but do not overpromise.
 
-INFORMATION TO GATHER (naturally through conversation):
-1. What the project is about
-2. Who will use it
-3. Main things it should do
-4. Whether they need a website, mobile app, or both
-5. Any special features (payments, bookings, gallery, etc.)
-6. Budget expectations
-7. Timeline
+INFORMATION TO GATHER:
+1. What the project is about.
+2. Who will use it.
+3. Core features.
+4. Website, app, dashboard, API, or multiple platforms.
+5. Special needs such as payments, bookings, auth, AI, files, notifications, admin panels, integrations.
+6. Budget in Indian Rupees (INR / ₹).
+7. Timeline.
 
-WHEN ASKED UNRELATED QUESTIONS:
-If someone asks about news, cricket, politics, general knowledge, or anything unrelated to software projects, respond:
-"I'm here specifically to help you plan your software project! Tell me about the website, app, or digital tool you'd like to create — I'd love to help you bring your idea to life."
+BUDGET RULES:
+- Always ask budget in ₹ / INR, not dollars.
+- Use ranges such as Under ₹50,000, ₹50,000 - ₹1,50,000, ₹1,50,000 - ₹5,00,000, ₹5,00,000+.
+- If the user gives dollars, politely ask for an approximate INR budget range. Do not pretend to know live exchange rates.
+
+UNRELATED QUESTIONS:
+If the user asks about news, politics, cricket, general knowledge, or anything unrelated to Bhupesh or project planning, briefly say you are here to help plan their software project and ask what they want to build.
 
 READY SIGNAL:
-Once you have gathered: project type, target users, main features, platform preference, budget, and timeline — add "READY_FOR_BRIEF" on a new line at the very end of your response.
+Once you have gathered project type, target users, main features, platform preference, INR budget, and timeline, add READY_FOR_BRIEF on a new line at the very end.
 
 PROGRESS TRACKING:
 At the end of every response, on a new line output exactly:
 PROGRESS:{"projectIdea":false,"targetUsers":false,"coreFeatures":false,"platformRequirements":false,"budget":false,"timeline":false}
-Set each to true once that topic is covered based on full conversation history.`;
+Set each value to true once that topic is covered based on the full conversation history.`;
 
 function extractProgress(text: string): ProgressState {
   const match = text.match(/PROGRESS:(\{[^}]+\})/);
-  if (!match)
-    return {
-      projectIdea: false,
-      targetUsers: false,
-      coreFeatures: false,
-      platformRequirements: false,
-      budget: false,
-      timeline: false,
-    };
+  if (!match) return EMPTY_PROGRESS;
   try {
-    return JSON.parse(match[1]);
+    return { ...EMPTY_PROGRESS, ...JSON.parse(match[1]) };
   } catch {
-    return {
-      projectIdea: false,
-      targetUsers: false,
-      coreFeatures: false,
-      platformRequirements: false,
-      budget: false,
-      timeline: false,
-    };
+    return EMPTY_PROGRESS;
   }
 }
 
@@ -102,13 +81,21 @@ function cleanReply(text: string): string {
     .trim();
 }
 
+function statusOf(err: unknown) {
+  if (typeof err === "object" && err !== null && "status" in err) {
+    return err.status;
+  }
+  return undefined;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const { messages } = (await req.json()) as { messages: Message[] };
 
     const result = await client.chat.completions.create({
       model: "llama-3.3-70b-versatile",
-      max_tokens: 1024,
+      max_tokens: 700,
+      temperature: 0.35,
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         ...messages.map((m) => ({
@@ -120,19 +107,22 @@ export async function POST(req: NextRequest) {
 
     const rawText = result.choices[0]?.message?.content ?? "";
 
-    const reply = cleanReply(rawText);
-    const progress = extractProgress(rawText);
-    const readyForBrief = rawText.includes("READY_FOR_BRIEF");
-
-    return NextResponse.json({ reply, progress, readyForBrief });
-  } catch (err: any) {
+    return NextResponse.json({
+      reply: cleanReply(rawText),
+      progress: extractProgress(rawText),
+      readyForBrief: rawText.includes("READY_FOR_BRIEF"),
+    });
+  } catch (err: unknown) {
     console.error("[chat]", err);
-    if (err?.status === 429) {
+    if (statusOf(err) === 429) {
       return NextResponse.json(
         { error: "Too many requests. Please wait a moment and try again." },
-        { status: 429 }
+        { status: 429 },
       );
     }
-    return NextResponse.json({ error: "Failed to get AI response" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to get AI response" },
+      { status: 500 },
+    );
   }
 }

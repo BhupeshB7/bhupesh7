@@ -32,6 +32,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "components/latest-design/WorkWithMe.tsx"  ],
+  ],
   "exclude": ["node_modules"]
 }

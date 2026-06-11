@@ -24,6 +24,7 @@ Rules:
 - techStack: suggest realistic modern stack (e.g. Next.js, Node.js, PostgreSQL, etc.)
 - futureEnhancements: 3-5 items
 - complexity: Low for simple CRUD apps, Medium for multi-role apps, High for AI/real-time/complex integrations
+- If budget appears in the conversation, preserve it in INR language inside the overview or futureEnhancements where relevant
 - Write everything in simple English even if the conversation was in Hindi`;
 
 export async function POST(req: NextRequest) {
